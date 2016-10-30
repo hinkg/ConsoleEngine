@@ -34,6 +34,11 @@ namespace ConsoleGame.Client
                 8,
                 "#");
 
+            graphics.DrawLine(
+                new Vector2(1, 6),
+                new Vector2(26, 21),
+                "%");
+
             graphics.Draw();
         }
     }

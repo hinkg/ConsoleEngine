@@ -30,19 +30,41 @@ namespace ConsoleGame.Core.Graphics
             lines[y].tiles[x].content = content;
         }
 
-        public void DrawVerticalLine(Vector2 pos, int length, string content)
+        public void DrawLine(Vector2 start, Vector2 end, string content)
         {
-            for (int y = pos.y; y < (length + y); y++)
-            {
-                lines[y].tiles[pos.x].content = content;
-            }
-        }
+            int x1 = start.x;
+            int y1 = start.y;
+            int x2 = end.x;
+            int y2 = end.y;
 
-        public void DrawHorizontalLine(Vector2 pos, int length, string content)
-        {
-            for (int x = pos.x; x < (length + x); x++)
+            int dx = Math.Abs(x2 - x1);
+            int dy = Math.Abs(y2 - y1);
+
+            int sx = x1 < x2 ? 1 : -1;
+            int sy = y1 < y2 ? 1 : -1;
+
+            int err = dx - dy;
+
+            while(true)
             {
-                lines[pos.y].tiles[x].content = content;
+                DrawPixel(x1, y1, content);
+
+                if (x1 == x2 && y1 == y2)
+                    break;
+
+                int e2 = 2 * err;
+
+                if (e2 > -dy)
+                {
+                    err -= dy;
+                    x1 += sx;
+                }
+
+                if (e2 < dx)
+                {
+                    err += dx;
+                    y1 += sy;
+                }
             }
         }
 
