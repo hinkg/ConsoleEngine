@@ -1,6 +1,4 @@
 using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ConsoleGame.Core.Graphics
 {
@@ -10,12 +8,12 @@ namespace ConsoleGame.Core.Graphics
 
         public void Load()
         {
-            lines = new Line[29];
+            lines = new Line[39];
 
             for (int a = 0; a < lines.Length; a++)
             {
                 lines[a] = new Line();
-                lines[a].tiles = new Tile[28];
+                lines[a].tiles = new Tile[99];
 
                 for (int b = 0; b < lines[a].tiles.Length; b++)
                 {
@@ -25,12 +23,13 @@ namespace ConsoleGame.Core.Graphics
             }
         }
 
-        public void DrawPixel(int x, int y, string content)
+        public void DrawPixel(int x, int y, string content, ConsoleColor color)
         {
             lines[y].tiles[x].content = content;
+            lines[y].tiles[x].color = color;
         }
 
-        public void DrawLine(Vector2 start, Vector2 end, string content)
+        public void DrawLine(Vector2 start, Vector2 end, string content, ConsoleColor color)
         {
             int x1 = start.x;
             int y1 = start.y;
@@ -45,9 +44,9 @@ namespace ConsoleGame.Core.Graphics
 
             int err = dx - dy;
 
-            while(true)
+            while (true)
             {
-                DrawPixel(x1, y1, content);
+                DrawPixel(x1, y1, content, color);
 
                 if (x1 == x2 && y1 == y2)
                     break;
@@ -68,25 +67,25 @@ namespace ConsoleGame.Core.Graphics
             }
         }
 
-        public void DrawFill(Vector2 pos1, Vector2 pos2, string content)
+        public void DrawFill(Vector2 pos1, Vector2 pos2, string content, ConsoleColor color)
         {
             for (int x = pos1.x; x < pos2.x; x++)
             {
                 for (int y = pos1.y; y < pos2.y; y++)
                 {
-                    lines[y].tiles[x].content = content;
+                    DrawPixel(x, y, content, color);
                 }
             }
         }
 
-        public void DrawOutline(Vector2 pos1, Vector2 pos2, int thickness, string content)
+        public void DrawOutline(Vector2 pos1, Vector2 pos2, int thickness, string content, ConsoleColor color)
         {
             //Top
             for (int x = pos1.x; x < pos2.x; x++)
             {
                 for (int y = pos1.y; y < (pos1.y + thickness); y++)
                 {
-                    lines[y].tiles[x].content = content;
+                    DrawPixel(x, y, content, color);
                 }
             }
 
@@ -95,7 +94,7 @@ namespace ConsoleGame.Core.Graphics
             {
                 for (int y = pos2.y - thickness; y < pos2.y; y++)
                 {
-                    lines[y].tiles[x].content = content;
+                    DrawPixel(x, y, content, color);
                 }
             }
 
@@ -104,7 +103,7 @@ namespace ConsoleGame.Core.Graphics
             {
                 for (int y = pos1.y; y < (pos2.y); y++)
                 {
-                    lines[y].tiles[x].content = content;
+                    DrawPixel(x, y, content, color);
                 }
             }
 
@@ -113,24 +112,28 @@ namespace ConsoleGame.Core.Graphics
             {
                 for (int y = pos1.y; y < (pos2.y); y++)
                 {
-                    lines[y].tiles[x].content = content;
+                    DrawPixel(x, y, content, color);
                 }
             }
         }
 
         public void Draw()
         {
+            Console.CursorVisible = false;
+            Console.SetWindowSize(200, 50);
+
             for (int a = 0; a < lines.Length; a++)
-            {   
-                string content = "";
+            {
+                Console.SetCursorPosition(0, a);
 
                 for (int b = 0; b < lines[a].tiles.Length; b++)
                 {
-                    Console.SetCursorPosition(0, a);
-                    content += lines[a].tiles[b].content + " ";
+                    Console.ForegroundColor = lines[a].tiles[b].color;
+                    Console.Write(lines[a].tiles[b].content);
+                    
+                    Console.Write(" ");
+                    Console.ForegroundColor = ConsoleColor.Black;
                 }
-
-                Console.Write(content);
             }
         }
     }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-using System.Threading.Tasks;
 using ConsoleGame.Core;
 using ConsoleGame.Core.Graphics;
 
@@ -17,8 +16,6 @@ namespace ConsoleGame.Client
             graphics = new GraphicsDevice();
             graphics.Load();
 
-            Console.CursorVisible = false;
-
             while (true)
             {
                 Update();
@@ -28,17 +25,20 @@ namespace ConsoleGame.Client
 
         protected void Update()
         {
-            graphics.DrawOutline(
-                new Vector2(1, 1),
-                new Vector2(27, 27),
-                8,
-                "#");
-
             graphics.DrawLine(
                 new Vector2(1, 6),
                 new Vector2(26, 21),
-                "%");
+                "%",
+                ConsoleColor.Blue);
 
+
+            graphics.DrawOutline(
+                new Vector2(5, 5),
+                new Vector2(20, 20),
+                5,
+                "%",
+                ConsoleColor.Red
+            );
             graphics.Draw();
         }
     }
