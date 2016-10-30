@@ -26,8 +26,8 @@ namespace ConsoleGame.Client
         protected void Update()
         {
             graphics.DrawLine(
-                new Vector2(1, 6),
-                new Vector2(26, 21),
+                new Vector2(0, 0),
+                new Vector2(99, 39),
                 "%",
                 ConsoleColor.Blue);
 

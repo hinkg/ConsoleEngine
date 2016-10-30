@@ -8,12 +8,12 @@ namespace ConsoleGame.Core.Graphics
 
         public void Load()
         {
-            lines = new Line[39];
+            lines = new Line[40];
 
             for (int a = 0; a < lines.Length; a++)
             {
                 lines[a] = new Line();
-                lines[a].tiles = new Tile[99];
+                lines[a].tiles = new Tile[100];
 
                 for (int b = 0; b < lines[a].tiles.Length; b++)
                 {
@@ -120,7 +120,7 @@ namespace ConsoleGame.Core.Graphics
         public void Draw()
         {
             Console.CursorVisible = false;
-            Console.SetWindowSize(200, 50);
+            Console.SetWindowSize(101, 40);
 
             for (int a = 0; a < lines.Length; a++)
             {
@@ -130,9 +130,6 @@ namespace ConsoleGame.Core.Graphics
                 {
                     Console.ForegroundColor = lines[a].tiles[b].color;
                     Console.Write(lines[a].tiles[b].content);
-                    
-                    Console.Write(" ");
-                    Console.ForegroundColor = ConsoleColor.Black;
                 }
             }
         }
