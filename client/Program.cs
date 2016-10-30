@@ -46,6 +46,13 @@ namespace ConsoleGame.Client
                 "',",
                 ConsoleColor.Red
             );
+
+            graphics.DrawText(
+                new Vector2(11, 10),
+                "Hi, I'm text.",
+                ConsoleColor.Magenta
+            );
+
             graphics.Draw();
         }
     }

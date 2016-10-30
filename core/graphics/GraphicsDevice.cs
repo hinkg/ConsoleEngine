@@ -29,6 +29,16 @@ namespace ConsoleGame.Core.Graphics
             lines[y].tiles[x].color = color;
         }
 
+        public void DrawText(Vector2 start, string text, ConsoleColor color)
+        {
+            int charOffset = 0;
+
+            for (int x = start.x; x < start.x + text.Length; x++)
+            {
+                DrawPixel(x, start.y, text[charOffset++], color);
+            }
+        }
+
         public void DrawLine(Vector2 start, Vector2 end, string content, ConsoleColor color)
         {
             int x1 = start.x;
