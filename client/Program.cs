@@ -25,18 +25,25 @@ namespace ConsoleGame.Client
 
         protected void Update()
         {
+            graphics.DrawFill(
+                new Vector2(0, 0),
+                new Vector2(100, 40),
+                "   .      .        .    ",
+                ConsoleColor.DarkGray
+            );
+
             graphics.DrawLine(
                 new Vector2(0, 0),
                 new Vector2(99, 39),
-                "%",
-                ConsoleColor.Blue);
-
+                "1234",
+                ConsoleColor.Blue
+            );
 
             graphics.DrawOutline(
                 new Vector2(5, 5),
-                new Vector2(20, 20),
-                5,
-                "%",
+                new Vector2(96, 35),
+                5, 4,
+                "',",
                 ConsoleColor.Red
             );
             graphics.Draw();

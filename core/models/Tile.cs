@@ -4,7 +4,7 @@ namespace ConsoleGame.Core
 {
     public class Tile
     {
-        public string content;
+        public char content;
 
         public ConsoleColor color = ConsoleColor.Black;
     }

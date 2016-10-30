@@ -18,12 +18,12 @@ namespace ConsoleGame.Core.Graphics
                 for (int b = 0; b < lines[a].tiles.Length; b++)
                 {
                     lines[a].tiles[b] = new Tile();
-                    lines[a].tiles[b].content = " ";
+                    lines[a].tiles[b].content = ' ';
                 }
             }
         }
 
-        public void DrawPixel(int x, int y, string content, ConsoleColor color)
+        public void DrawPixel(int x, int y, char content, ConsoleColor color)
         {
             lines[y].tiles[x].content = content;
             lines[y].tiles[x].color = color;
@@ -44,9 +44,14 @@ namespace ConsoleGame.Core.Graphics
 
             int err = dx - dy;
 
+            int charOffset = 0;
+
             while (true)
             {
-                DrawPixel(x1, y1, content, color);
+                DrawPixel(x1, y1, content[charOffset++], color);
+
+                if (charOffset >= content.Length)
+                    charOffset = 0;
 
                 if (x1 == x2 && y1 == y2)
                     break;
@@ -69,52 +74,48 @@ namespace ConsoleGame.Core.Graphics
 
         public void DrawFill(Vector2 pos1, Vector2 pos2, string content, ConsoleColor color)
         {
-            for (int x = pos1.x; x < pos2.x; x++)
+            int charOffset = 0;
+
+            for (int y = pos1.y; y < pos2.y; y++)
             {
-                for (int y = pos1.y; y < pos2.y; y++)
+                for (int x = pos1.x; x < pos2.x; x++)
                 {
-                    DrawPixel(x, y, content, color);
+                    DrawPixel(x, y, content[charOffset++], color);
+
+                    if (charOffset >= content.Length)
+                        charOffset = 0;
                 }
             }
         }
 
-        public void DrawOutline(Vector2 pos1, Vector2 pos2, int thickness, string content, ConsoleColor color)
+        public void DrawOutline(Vector2 pos1, Vector2 pos2, int thicknessX, int thicknessY, string content, ConsoleColor color)
         {
-            //Top
-            for (int x = pos1.x; x < pos2.x; x++)
-            {
-                for (int y = pos1.y; y < (pos1.y + thickness); y++)
-                {
-                    DrawPixel(x, y, content, color);
-                }
-            }
+            Vector2 spaceStart = new Vector2(pos1.x + thicknessX, pos1.y + thicknessY);
+            Vector2 spaceEnd = new Vector2(pos2.x - thicknessX, pos2.y - thicknessY);
 
-            //Bottom
-            for (int x = pos1.x; x < pos2.x; x++)
-            {
-                for (int y = pos2.y - thickness; y < pos2.y; y++)
-                {
-                    DrawPixel(x, y, content, color);
-                }
-            }
+            int charOffset = 0;
 
-            //Right
-            for (int x = pos2.x - thickness; x < pos2.x; x++)
+            for (int y = pos1.y; y < pos2.y; y++)
             {
-                for (int y = pos1.y; y < (pos2.y); y++)
+                for (int x = pos1.x; x < pos2.x; x++)
                 {
-                    DrawPixel(x, y, content, color);
-                }
-            }
+                    if (spaceStart.y <= y && y < spaceEnd.y)
+                    {
+                        if (spaceStart.x <= x && x < spaceEnd.x)
+                            continue;
+                        else if (x == spaceEnd.x)
+                            charOffset = 0;
+                    }
 
-            //Left
-            for (int x = pos1.x; x < pos1.x + thickness; x++)
-            {
-                for (int y = pos1.y; y < (pos2.y); y++)
-                {
-                    DrawPixel(x, y, content, color);
+                    DrawPixel(x, y, content[charOffset++], color);
+
+                    if (charOffset >= content.Length)
+                        charOffset = 0;
                 }
+
+                charOffset = 0;
             }
+            return;
         }
 
         public void Draw()
