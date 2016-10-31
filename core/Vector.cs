@@ -1,4 +1,4 @@
-namespace ConsoleEngine.Core.Objects
+namespace ConsoleEngine.Core
 {
     public class Vector2
     {

@@ -18,7 +18,6 @@ namespace ConsoleEngine.Core.Objects
             this.size = size;
             this.thickness = thickness;
             transform = new Transform(position);
-
         }
     }
 }

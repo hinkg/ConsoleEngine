@@ -1,5 +1,4 @@
 using System;
-using ConsoleEngine.Core.Objects;
 
 namespace ConsoleEngine.Core.Graphics
 {

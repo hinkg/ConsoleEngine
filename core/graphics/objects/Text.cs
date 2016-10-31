@@ -1,6 +1,6 @@
 using System;
 
-namespace ConsoleEngine.Core.Objects 
+namespace ConsoleEngine.Core.Graphics
 {
     public class Text 
     {
