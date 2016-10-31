@@ -18,11 +18,18 @@ namespace ConsoleEngine.Core.Graphics
 
         public void Draw(GraphicsDevice graphics)
         {
-            int charOffset = 0;
+            int x = transform.position.x;
+            int y = transform.position.y;
 
-            for (int x = transform.position.x; x < transform.position.x + content.Length; x++)
+            foreach (char c in content)
             {
-                graphics.DrawPixel(x, transform.position.y, content[charOffset++], color);
+                if (c == '\n')
+                {
+                    y++;
+                    x = transform.position.x;
+                }
+                else
+                    graphics.DrawPixel(x++, y, c, color);
             }
         }
     }

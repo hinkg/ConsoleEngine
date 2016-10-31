@@ -43,36 +43,15 @@ namespace ConsoleGame.Client
             graphics.Draw(outline1);
 
             //Console Engine
-            Text text1 = new Text(
-                " _____                 _        _____         _",
-                ConsoleColor.White,
-                new Vector2(15, 9));
-
-            Text text2 = new Text(
-                "|     |___ ___ ___ ___| |___   |   __|___ ___|_|___ ___",
-                ConsoleColor.White,
-                new Vector2(15, 10));
-
-            Text text3 = new Text(
-                "|   --| . |   |_ -| . | | -_|  |   __|   | . | |   | -_|",
-                ConsoleColor.White,
-                new Vector2(15, 11));
-
-            Text text4 = new Text(
-                "|_____|___|_|_|___|___|_|___|  |_____|_|_|_  |_|_|_|___|",
-                ConsoleColor.White,
-                new Vector2(15, 12));
-            
-            Text text5 = new Text(
+            new Text(
+                " _____                 _        _____         _\n" +
+                "|     |___ ___ ___ ___| |___   |   __|___ ___|_|___ ___\n" +
+                "|   --| . |   |_ -| . | | -_|  |   __|   | . | |   | -_|\n" +
+                "|_____|___|_|_|___|___|_|___|  |_____|_|_|_  |_|_|_|___|\n" +
                 "                                         |___|",
                 ConsoleColor.White,
-                new Vector2(15, 13));
-            
-            graphics.Draw(text1);
-            graphics.Draw(text2);
-            graphics.Draw(text3);
-            graphics.Draw(text4);
-            graphics.Draw(text5);
+                new Vector2(15, 9)
+            ).Draw(graphics);
 
 
 
