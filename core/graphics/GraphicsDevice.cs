@@ -1,50 +1,78 @@
 using System;
+using ConsoleGame.Core.Objects;
 
 namespace ConsoleGame.Core.Graphics
 {
     public class GraphicsDevice
     {
-        public Line[] lines;
+        public Row[] rows;
+
+        public enum objType
+        {
+            text = 0,
+            line = 1,
+            rectangle = 2,
+            outline = 3
+        }
 
         public void Load()
         {
-            lines = new Line[40];
+            rows = new Row[40];
 
-            for (int a = 0; a < lines.Length; a++)
+            for (int a = 0; a < rows.Length; a++)
             {
-                lines[a] = new Line();
-                lines[a].tiles = new Tile[100];
+                rows[a] = new Row();
+                rows[a].tiles = new Tile[100];
 
-                for (int b = 0; b < lines[a].tiles.Length; b++)
+                for (int b = 0; b < rows[a].tiles.Length; b++)
                 {
-                    lines[a].tiles[b] = new Tile();
-                    lines[a].tiles[b].content = ' ';
+                    rows[a].tiles[b] = new Tile();
+                    rows[a].tiles[b].content = ' ';
                 }
+            }
+        }
+
+        public void Draw(Object obj, objType objType)
+        {
+            switch (objType)
+            {
+                case objType.text:
+                    DrawText((Text)obj);
+                    return;
+                case objType.line:
+                    DrawLine((Line)obj);
+                    return;
+                case objType.rectangle:
+                    DrawRectangle((Rectangle)obj);
+                    return;
+                case objType.outline:
+                    DrawOutline((Outline)obj);
+                    return;
             }
         }
 
         public void DrawPixel(int x, int y, char content, ConsoleColor color)
         {
-            lines[y].tiles[x].content = content;
-            lines[y].tiles[x].color = color;
+            rows[y].tiles[x].content = content;
+            rows[y].tiles[x].color = color;
         }
 
-        public void DrawText(Vector2 start, string text, ConsoleColor color)
+        private void DrawText(Text text)
         {
             int charOffset = 0;
 
-            for (int x = start.x; x < start.x + text.Length; x++)
+            for (int x = text.position.x; x < text.position.x + text.content.Length; x++)
             {
-                DrawPixel(x, start.y, text[charOffset++], color);
+                DrawPixel(x, text.position.y, text.content[charOffset++], text.color);
             }
         }
 
-        public void DrawLine(Vector2 start, Vector2 end, string content, ConsoleColor color)
+        public void DrawLine(Line line)
         {
-            int x1 = start.x;
-            int y1 = start.y;
-            int x2 = end.x;
-            int y2 = end.y;
+            int x1 = line.position1.x;
+            int y1 = line.position1.y;
+            int x2 = line.position2.x;
+            int y2 = line.position2.y;
 
             int dx = Math.Abs(x2 - x1);
             int dy = Math.Abs(y2 - y1);
@@ -58,9 +86,9 @@ namespace ConsoleGame.Core.Graphics
 
             while (true)
             {
-                DrawPixel(x1, y1, content[charOffset++], color);
+                DrawPixel(x1, y1, line.content[charOffset++], line.color);
 
-                if (charOffset >= content.Length)
+                if (charOffset >= line.content.Length)
                     charOffset = 0;
 
                 if (x1 == x2 && y1 == y2)
@@ -82,32 +110,32 @@ namespace ConsoleGame.Core.Graphics
             }
         }
 
-        public void DrawFill(Vector2 pos1, Vector2 pos2, string content, ConsoleColor color)
+        public void DrawRectangle(Rectangle rect)
         {
             int charOffset = 0;
 
-            for (int y = pos1.y; y < pos2.y; y++)
+            for (int y = rect.position1.y; y < rect.position2.y; y++)
             {
-                for (int x = pos1.x; x < pos2.x; x++)
+                for (int x = rect.position1.x; x < rect.position2.x; x++)
                 {
-                    DrawPixel(x, y, content[charOffset++], color);
+                    DrawPixel(x, y, rect.content[charOffset++], rect.color);
 
-                    if (charOffset >= content.Length)
+                    if (charOffset >= rect.content.Length)
                         charOffset = 0;
                 }
             }
         }
 
-        public void DrawOutline(Vector2 pos1, Vector2 pos2, int thicknessX, int thicknessY, string content, ConsoleColor color)
+        public void DrawOutline(Outline outline)
         {
-            Vector2 spaceStart = new Vector2(pos1.x + thicknessX, pos1.y + thicknessY);
-            Vector2 spaceEnd = new Vector2(pos2.x - thicknessX, pos2.y - thicknessY);
+            Vector2 spaceStart = new Vector2(outline.position1.x + outline.thicknessX, outline.position1.y + outline.thicknessY);
+            Vector2 spaceEnd = new Vector2(outline.position2.x - outline.thicknessX, outline.position2.y - outline.thicknessY);
 
             int charOffset = 0;
 
-            for (int y = pos1.y; y < pos2.y; y++)
+            for (int y = outline.position1.y; y < outline.position2.y; y++)
             {
-                for (int x = pos1.x; x < pos2.x; x++)
+                for (int x = outline.position1.x; x < outline.position2.x; x++)
                 {
                     if (spaceStart.y <= y && y < spaceEnd.y)
                     {
@@ -117,9 +145,9 @@ namespace ConsoleGame.Core.Graphics
                             charOffset = 0;
                     }
 
-                    DrawPixel(x, y, content[charOffset++], color);
+                    DrawPixel(x, y, outline.content[charOffset++], outline.color);
 
-                    if (charOffset >= content.Length)
+                    if (charOffset >= outline.content.Length)
                         charOffset = 0;
                 }
 
@@ -128,21 +156,33 @@ namespace ConsoleGame.Core.Graphics
             return;
         }
 
-        public void Draw()
+        public void Refresh()
         {
             Console.CursorVisible = false;
             Console.SetWindowSize(101, 40);
 
-            for (int a = 0; a < lines.Length; a++)
+            for (int a = 0; a < rows.Length; a++)
             {
                 Console.SetCursorPosition(0, a);
 
-                for (int b = 0; b < lines[a].tiles.Length; b++)
+                for (int b = 0; b < rows[a].tiles.Length; b++)
                 {
-                    Console.ForegroundColor = lines[a].tiles[b].color;
-                    Console.Write(lines[a].tiles[b].content);
+                    Console.ForegroundColor = rows[a].tiles[b].color;
+                    Console.Write(rows[a].tiles[b].content);
                 }
             }
+        }
+
+        public class Row
+        {
+            public Tile[] tiles;
+        }
+
+        public class Tile
+        {
+            public char content;
+
+            public ConsoleColor color = ConsoleColor.Black;
         }
     }
 }
