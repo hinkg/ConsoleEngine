@@ -39,8 +39,8 @@ namespace ConsoleGame.Client
                 new Vector2(90, 30),
                 new Vector2(8, 4));
 
-            graphics.Draw(background1, GraphicsDevice.objType.rectangle);
-            graphics.Draw(outline1, GraphicsDevice.objType.outline);
+            graphics.Draw(background1);
+            graphics.Draw(outline1);
 
             //Console Engine
             Text text1 = new Text(
@@ -68,11 +68,11 @@ namespace ConsoleGame.Client
                 ConsoleColor.White,
                 new Vector2(15, 13));
             
-            graphics.Draw(text1, GraphicsDevice.objType.text);
-            graphics.Draw(text2, GraphicsDevice.objType.text);
-            graphics.Draw(text3, GraphicsDevice.objType.text);
-            graphics.Draw(text4, GraphicsDevice.objType.text);
-            graphics.Draw(text5, GraphicsDevice.objType.text);
+            graphics.Draw(text1);
+            graphics.Draw(text2);
+            graphics.Draw(text3);
+            graphics.Draw(text4);
+            graphics.Draw(text5);
 
 
 

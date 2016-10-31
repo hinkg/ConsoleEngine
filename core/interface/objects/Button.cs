@@ -1,9 +1,9 @@
+using ConsoleEngine.Core.Graphics;
 using System;
-using ConsoleEngine.Core;
 
 namespace ConsoleEngine.Core.Interface
 {
-    public class Button
+    public class Button : IObject
     {
         public string content;
         public ConsoleColor color;
@@ -15,6 +15,11 @@ namespace ConsoleEngine.Core.Interface
             this.content = content;
             this.color = color;
             transform = new Transform(position);
+        }
+
+        public void Draw(GraphicsDevice graphics)
+        {
+            throw new NotImplementedException();
         }
     }
 }

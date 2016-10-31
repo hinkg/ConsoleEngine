@@ -1,8 +1,8 @@
 using System;
 
-namespace ConsoleEngine.Core.Objects
+namespace ConsoleEngine.Core.Graphics
 {
-    public class Rectangle
+    public class Rectangle : IObject
     {
         public string content;
         public ConsoleColor color;
@@ -16,6 +16,22 @@ namespace ConsoleEngine.Core.Objects
             this.color = color;
             this.size = size;
             transform = new Transform(position);
+        }
+
+        public void Draw(GraphicsDevice graphics)
+        {
+            int charOffset = 0;
+
+            for (int y = transform.position.y - (size.y / 2); y < transform.position.y + (size.y / 2); y++)
+            {
+                for (int x = transform.position.x - (size.x / 2); x < transform.position.x + (size.x / 2); x++)
+                {
+                    graphics.DrawPixel(x, y, content[charOffset++], color);
+
+                    if (charOffset >= content.Length)
+                        charOffset = 0;
+                }
+            }
         }
     }
 }
