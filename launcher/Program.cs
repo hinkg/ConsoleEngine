@@ -2,6 +2,7 @@
 using System.Threading;
 using ConsoleEngine.Core;
 using ConsoleEngine.Core.Graphics;
+using ConsoleEngine.Core.Interface;
 
 namespace ConsoleGame.Client
 {
@@ -10,17 +11,40 @@ namespace ConsoleGame.Client
         public static void Main(string[] args) => new Program().Start();
 
         public GraphicsDevice graphics;
-
+        public InterfaceManager uinterface;
         protected void Start()
         {
             graphics = new GraphicsDevice();
             graphics.Load();
+            uinterface = new InterfaceManager();
+            uinterface.Load();
+
+            AddButtons();
 
             while (true)
             {
                 Update();
                 Thread.Sleep(10);
             }
+        }
+
+        protected void AddButtons()
+        {
+            new Button(
+                "[Button #1]",
+                ConsoleColor.White,
+                ConsoleColor.Gray,
+                new Vector2(15, 16),
+                0
+            ).Add(uinterface);
+
+            new Button(
+                "[Button #2]",
+                ConsoleColor.White,
+                ConsoleColor.Gray,
+                new Vector2(15, 18),
+                1
+            ).Add(uinterface);
         }
 
         protected void Update()
@@ -53,7 +77,13 @@ namespace ConsoleGame.Client
                 new Vector2(15, 9)
             ).Draw(graphics);
 
-
+            //Buttons
+            Random rdm = new Random();
+            
+            if (rdm.Next(0, 2) == 1) uinterface.SelectButton(0);
+            else uinterface.SelectButton(1);
+            
+            uinterface.Draw(graphics);
 
             graphics.Refresh();
         }
