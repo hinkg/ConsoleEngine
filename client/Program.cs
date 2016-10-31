@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Threading;
-using ConsoleGame.Core;
-using ConsoleGame.Core.Objects;
-using ConsoleGame.Core.Graphics;
+using ConsoleEngine.Core.Objects;
+using ConsoleEngine.Core.Graphics;
 
 namespace ConsoleGame.Client
 {
@@ -28,31 +27,31 @@ namespace ConsoleGame.Client
         {
             Random rdm = new Random();
 
+            Rectangle background1 = new Rectangle(
+                "   .      .        .    ",
+                ConsoleColor.DarkGray,
+                new Vector2(100, 40),
+                new Vector2(50, 20));
+
+            Outline outline1 = new Outline(
+                "',",
+                ConsoleColor.Red,
+                new Vector2(50, 20), //position
+                new Vector2(90, 30), //size
+                new Vector2(8, 4));  //thickness
+
+            Line line1 = new Line(
+                "1234",
+                ConsoleColor.Blue,
+                new Vector2(50, 20),
+                new Vector2(30, 30));
+
             Text text1 = new Text(
                 "Hi, I'm some shaky text",
                 ConsoleColor.Magenta,
                 new Vector2(20, 10));
 
-            Line line1 = new Line(
-                "1234",
-                ConsoleColor.Blue,
-                new Vector2(0, 0),
-                new Vector2(99, 39));
-
-            Rectangle background1 = new Rectangle(
-                "   .      .        .    ",
-                ConsoleColor.DarkGray,
-                new Vector2(0, 0),
-                new Vector2(100, 40));
-
-            Outline outline1 = new Outline(
-                "',",
-                ConsoleColor.Red, 
-                new Vector2(5, 5),
-                new Vector2(96, 35), 
-                5, 4);
-
-            text1.position = new Vector2(rdm.Next(19, 21), text1.position.y);
+            text1.transform.Translate(new Vector2(rdm.Next(19, 21), text1.transform.position.y));
 
             graphics.Draw(background1, GraphicsDevice.objType.rectangle);
             graphics.Draw(outline1, GraphicsDevice.objType.outline);

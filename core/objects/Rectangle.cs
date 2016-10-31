@@ -1,20 +1,21 @@
 using System;
 
-namespace ConsoleGame.Core.Objects 
+namespace ConsoleEngine.Core.Objects
 {
     public class Rectangle
     {
         public string content;
         public ConsoleColor color;
-        public Vector2 position1;
-        public Vector2 position2;
+        public Vector2 size;
+        public Transform transform;
 
-        public Rectangle(string content, ConsoleColor color, Vector2 position1, Vector2 position2)
+        //Constructor
+        public Rectangle(string content, ConsoleColor color, Vector2 size, Vector2 position)
         {
             this.content = content;
             this.color = color;
-            this.position1 = position1;
-            this.position2 = position2;
+            this.size = size;
+            transform = new Transform(position);
         }
     }
 }

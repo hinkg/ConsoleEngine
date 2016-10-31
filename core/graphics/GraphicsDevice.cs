@@ -1,7 +1,7 @@
 using System;
-using ConsoleGame.Core.Objects;
+using ConsoleEngine.Core.Objects;
 
-namespace ConsoleGame.Core.Graphics
+namespace ConsoleEngine.Core.Graphics
 {
     public class GraphicsDevice
     {
@@ -61,18 +61,18 @@ namespace ConsoleGame.Core.Graphics
         {
             int charOffset = 0;
 
-            for (int x = text.position.x; x < text.position.x + text.content.Length; x++)
+            for (int x = text.transform.position.x; x < text.transform.position.x + text.content.Length; x++)
             {
-                DrawPixel(x, text.position.y, text.content[charOffset++], text.color);
+                DrawPixel(x, text.transform.position.y, text.content[charOffset++], text.color);
             }
         }
 
         public void DrawLine(Line line)
         {
-            int x1 = line.position1.x;
-            int y1 = line.position1.y;
-            int x2 = line.position2.x;
-            int y2 = line.position2.y;
+            int x1 = line.transform.position.x - (line.size.x / 2);
+            int y1 = line.transform.position.y - (line.size.y / 2);
+            int x2 = line.transform.position.x + (line.size.x / 2);
+            int y2 = line.transform.position.y + (line.size.y / 2);
 
             int dx = Math.Abs(x2 - x1);
             int dy = Math.Abs(y2 - y1);
@@ -114,9 +114,9 @@ namespace ConsoleGame.Core.Graphics
         {
             int charOffset = 0;
 
-            for (int y = rect.position1.y; y < rect.position2.y; y++)
+            for (int y = rect.transform.position.y - (rect.size.y / 2); y < rect.transform.position.y + (rect.size.y / 2); y++)
             {
-                for (int x = rect.position1.x; x < rect.position2.x; x++)
+                for (int x = rect.transform.position.x - (rect.size.x / 2); x < rect.transform.position.x + (rect.size.x / 2); x++)
                 {
                     DrawPixel(x, y, rect.content[charOffset++], rect.color);
 
@@ -128,14 +128,19 @@ namespace ConsoleGame.Core.Graphics
 
         public void DrawOutline(Outline outline)
         {
-            Vector2 spaceStart = new Vector2(outline.position1.x + outline.thicknessX, outline.position1.y + outline.thicknessY);
-            Vector2 spaceEnd = new Vector2(outline.position2.x - outline.thicknessX, outline.position2.y - outline.thicknessY);
+            Vector2 spaceStart = new Vector2(
+                (outline.transform.position.x - outline.size.x / 2) + outline.thickness.x,
+                (outline.transform.position.y - outline.size.y / 2) + outline.thickness.y);
+
+            Vector2 spaceEnd = new Vector2(
+                (outline.transform.position.x + outline.size.x / 2) - outline.thickness.x,
+                (outline.transform.position.y + outline.size.y / 2) - outline.thickness.y);
 
             int charOffset = 0;
 
-            for (int y = outline.position1.y; y < outline.position2.y; y++)
+            for (int y = outline.transform.position.y - (outline.size.y / 2); y < outline.transform.position.y + (outline.size.y / 2); y++)
             {
-                for (int x = outline.position1.x; x < outline.position2.x; x++)
+                for (int x = outline.transform.position.x - (outline.size.x / 2); x < outline.transform.position.x + (outline.size.x / 2); x++)
                 {
                     if (spaceStart.y <= y && y < spaceEnd.y)
                     {

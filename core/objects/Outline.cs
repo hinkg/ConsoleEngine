@@ -1,24 +1,24 @@
 using System;
 
-namespace ConsoleGame.Core.Objects 
+namespace ConsoleEngine.Core.Objects
 {
     public class Outline
     {
         public string content;
         public ConsoleColor color;
-        public Vector2 position1;
-        public Vector2 position2;
-        public int thicknessX;
-        public int thicknessY;
+        public Vector2 size;
+        public Vector2 thickness;
+        public Transform transform;
 
-        public Outline(string content, ConsoleColor color, Vector2 position1, Vector2 position2, int thicknessX, int thicknessY)
+        //Constructor
+        public Outline(string content, ConsoleColor color, Vector2 position, Vector2 size, Vector2 thickness)
         {
             this.content = content;
             this.color = color;
-            this.position1 = position1;
-            this.position2 = position2;
-            this.thicknessX = thicknessX;
-            this.thicknessY = thicknessY;
+            this.size = size;
+            this.thickness = thickness;
+            transform = new Transform(position);
+
         }
     }
 }
