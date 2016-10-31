@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 
 namespace ConsoleEngine.Core.Graphics
 {
@@ -47,16 +48,36 @@ namespace ConsoleEngine.Core.Graphics
             Console.CursorVisible = false;
             Console.SetWindowSize(101, 40);
 
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             for (int a = 0; a < rows.Length; a++)
             {
+                string content = "";
+                ConsoleColor color = rows[a].tiles[0].color;
+
                 Console.SetCursorPosition(0, a);
 
                 for (int b = 0; b < rows[a].tiles.Length; b++)
                 {
-                    Console.ForegroundColor = rows[a].tiles[b].color;
-                    Console.Write(rows[a].tiles[b].content);
+                    if (rows[a].tiles[b].color != color)
+                    {
+                        Console.Write(content);
+
+                        Console.ForegroundColor = rows[a].tiles[b].color;
+                        Console.Write(rows[a].tiles[b].content);
+
+                        content = "";
+                    }
+                    else
+                    {
+                        content += rows[a].tiles[b].content;
+                    }
                 }
             }
+
+            stopwatch.Stop();
+            Console.Title = $"ConsoleEngine FPS: {1000 / (int)stopwatch.ElapsedMilliseconds} ({stopwatch.ElapsedMilliseconds}ms)";
         }
 
         public class Row

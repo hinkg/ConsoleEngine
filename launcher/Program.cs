@@ -45,22 +45,22 @@ namespace ConsoleGame.Client
         private void AddButtons()
         {
             new Button(
-                "[Button #1]",
-                ConsoleColor.White,
+                "[Red Button]",
+                ConsoleColor.Red,
                 ConsoleColor.Gray,
                 new Vector2(15, 16),
                 1
             ).Add(uinterface);
             new Button(
-                "[Button #2]",
-                ConsoleColor.White,
+                "[Green Button]",
+                ConsoleColor.DarkGreen,
                 ConsoleColor.Gray,
                 new Vector2(15, 18),
                 2
             ).Add(uinterface);
             new Button(
-                "[Button #3]",
-                ConsoleColor.White,
+                "[Blue Button]",
+                ConsoleColor.Blue,
                 ConsoleColor.Gray,
                 new Vector2(15, 20),
                 3
