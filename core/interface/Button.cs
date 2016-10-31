@@ -3,7 +3,7 @@ using ConsoleEngine.Core.Graphics;
 
 namespace ConsoleEngine.Core.Interface
 {
-    public class Button : IInput
+    public class Button : IInterface
     {
         public string content;
         public ConsoleColor selectedColor;

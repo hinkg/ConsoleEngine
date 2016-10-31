@@ -2,7 +2,7 @@ using ConsoleEngine.Core.Interface;
 
 namespace ConsoleEngine.Core
 {
-    public abstract class IInput
+    public abstract class IInterface
     {
         public abstract void Draw(Graphics.GraphicsDevice graphics);
 
