@@ -9,7 +9,6 @@ namespace ConsoleEngine.Core.Interface
         public ConsoleColor selectedColor;
         public ConsoleColor unselectedColor;
         public Transform transform;
-
         public int index;
         public bool selected = false;
 

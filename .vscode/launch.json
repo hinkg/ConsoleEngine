@@ -7,7 +7,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             "program": "${workspaceRoot}\\bin\\Debug\\netcoreapp1.1\\ConsoleGame.dll",
-            "args": [],
+            "args": [
+                "${workspaceRoot}"
+            ],
             "cwd": "${workspaceRoot}",
             "externalConsole": true,
             "stopAtEntry": false,

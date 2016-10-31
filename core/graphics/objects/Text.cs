@@ -20,7 +20,7 @@ namespace ConsoleEngine.Core.Graphics
         {
             int x = transform.position.x;
             int y = transform.position.y;
-
+            
             foreach (char c in content)
             {
                 if (c == '\n')
