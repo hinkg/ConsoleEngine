@@ -5,31 +5,27 @@ namespace ConsoleEngine.Core.Graphics
 {
     public class GraphicsDevice
     {
-        public Row[] rows;
+        public Tile[] tiles;
 
-        public enum objType
+        public int width, height;
+
+        public GraphicsDevice(int width, int height)
         {
-            text = 0,
-            line = 1,
-            rectangle = 2,
-            outline = 3
+            this.width = width;
+            this.height = height;
         }
 
         public void Load()
         {
-            rows = new Row[40];
+            Console.CursorVisible = false;
+            Console.SetWindowSize(width, height);
+            Console.BufferWidth = width + 1;
+            Console.BufferHeight = height;
 
-            for (int a = 0; a < rows.Length; a++)
-            {
-                rows[a] = new Row();
-                rows[a].tiles = new Tile[100];
+            tiles = new Tile[width * height];
 
-                for (int b = 0; b < rows[a].tiles.Length; b++)
-                {
-                    rows[a].tiles[b] = new Tile();
-                    rows[a].tiles[b].content = ' ';
-                }
-            }
+            for (int i = 0; i < tiles.Length; i++)
+                tiles[i] = new Tile();
         }
 
         public void Draw(IObject obj)
@@ -39,57 +35,60 @@ namespace ConsoleEngine.Core.Graphics
 
         public void DrawPixel(int x, int y, char content, ConsoleColor color)
         {
-            rows[y].tiles[x].content = content;
-            rows[y].tiles[x].color = color;
+            if (0 <= x && x < width
+             && 0 <= y && y < height)
+            {
+                Tile tile = tiles[x + y * width];
+                tile.content = content;
+                tile.color = color;
+            }
         }
 
         public void Refresh()
         {
-            Console.CursorVisible = false;
-            Console.SetWindowSize(101, 40);
+            int updates = 0;
 
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            for (int a = 0; a < rows.Length; a++)
+            int index = 0;
+
+            for (int y = 0; y < height; y++)
             {
-                string content = "";
-                ConsoleColor color = rows[a].tiles[0].color;
+                Console.SetCursorPosition(0, y);
 
-                Console.SetCursorPosition(0, a);
-
-                for (int b = 0; b < rows[a].tiles.Length; b++)
+                for (int x = 0; x < width; x++)
                 {
-                    if (rows[a].tiles[b].color != color)
-                    {
-                        Console.Write(content);
+                    Tile tile = tiles[index++];
 
-                        Console.ForegroundColor = rows[a].tiles[b].color;
-                        Console.Write(rows[a].tiles[b].content);
-
-                        content = "";
-                    }
-                    else
+                    if (tile.content != tile.prevContent || tile.color != tile.prevColor)
                     {
-                        content += rows[a].tiles[b].content;
+                        Console.SetCursorPosition(x, y);
+                        Console.ForegroundColor = tile.color;
+                        Console.Write(tile.content);
+
+                        tile.prevContent = tile.content;
+                        tile.prevColor = tile.color;
+
+                        updates++;
                     }
                 }
             }
 
             stopwatch.Stop();
-            Console.Title = $"ConsoleEngine FPS: {1000 / (int)stopwatch.ElapsedMilliseconds} ({stopwatch.ElapsedMilliseconds}ms)";
-        }
-
-        public class Row
-        {
-            public Tile[] tiles;
+            int ms = (int)stopwatch.ElapsedMilliseconds;
+            if(ms == 0)
+                ms = 1;
+            Console.Title = $"ConsoleEngine FPS: {1000 / ms} ({ms}ms), updates: {updates}";
         }
 
         public class Tile
         {
-            public char content;
+            public char content = ' ';
+            public char prevContent = ' ';
 
             public ConsoleColor color = ConsoleColor.Black;
+            public ConsoleColor prevColor = ConsoleColor.Black;
         }
     }
 }

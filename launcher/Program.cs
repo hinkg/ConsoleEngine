@@ -29,7 +29,7 @@ namespace ConsoleGame.Client
             this.args = args;
 
             //Load graphics
-            graphics = new GraphicsDevice();
+            graphics = new GraphicsDevice(100, 40);
             graphics.Load();
 
             //Load interface

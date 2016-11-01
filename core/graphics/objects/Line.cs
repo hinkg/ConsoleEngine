@@ -20,10 +20,10 @@ namespace ConsoleEngine.Core.Graphics
 
         public void Draw(GraphicsDevice graphics)
         {
-            int x1 = transform.position.x - (size.x / 2);
-            int y1 = transform.position.y - (size.y / 2);
-            int x2 = transform.position.x + (size.x / 2);
-            int y2 = transform.position.y + (size.y / 2);
+            int x1 = transform.position.x;
+            int y1 = transform.position.y;
+            int x2 = transform.position.x + size.x - 1;
+            int y2 = transform.position.y + size.y - 1;
 
             int dx = Math.Abs(x2 - x1);
             int dy = Math.Abs(y2 - y1);
