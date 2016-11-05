@@ -1,23 +1,21 @@
 using System;
 using System.Threading;
 
-namespace ConsoleEngine.Core.Input 
+namespace ConsoleEngine.Core.Input
 {
-    public class InputHandler 
+    public class InputHandler
     {
         public ConsoleKey Key;
-
-        private bool input;
-
-        public void StartInputListener() 
+        
+        public InputHandler()
         {
             Thread inputThread = new Thread(new ThreadStart(ListenForInput));
             inputThread.Start();
         }
 
-        public void ListenForInput() 
+        public void ListenForInput()
         {
-            while(true)
+            while (true)
             {
                 Key = Console.ReadKey(true).Key;
             }

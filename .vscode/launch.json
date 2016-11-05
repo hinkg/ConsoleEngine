@@ -8,18 +8,12 @@
             "preLaunchTask": "build",
             "program": "${workspaceRoot}\\bin\\Debug\\netcoreapp1.1\\ConsoleGame.dll",
             "args": [
-                "${workspaceRoot}"
+                "${workspaceRoot}/src"
             ],
             "cwd": "${workspaceRoot}",
             "externalConsole": true,
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart"
-        },
-        {
-            "name": ".NET Core Attach",
-            "type": "coreclr",
-            "request": "attach",
-            "processId": "${command.pickProcess}"
         }
     ]
 }

@@ -13,10 +13,7 @@ namespace ConsoleEngine.Core.Graphics
         {
             this.width = width;
             this.height = height;
-        }
 
-        public void Load()
-        {
             Console.CursorVisible = false;
             Console.SetWindowSize(width, height);
             Console.BufferWidth = width + 1;
@@ -76,9 +73,9 @@ namespace ConsoleEngine.Core.Graphics
             }
 
             stopwatch.Stop();
+
             int ms = (int)stopwatch.ElapsedMilliseconds;
-            if(ms == 0)
-                ms = 1;
+            if (ms == 0) ms = 1;
             Console.Title = $"ConsoleEngine FPS: {1000 / ms} ({ms}ms), updates: {updates}";
         }
 

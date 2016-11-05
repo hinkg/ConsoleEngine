@@ -6,7 +6,7 @@ namespace ConsoleEngine.Core.Interface
     {
         public List<Button> buttons { get; private set; }
 
-        public void Load()
+        public InterfaceManager()
         {
             buttons = new List<Button>();
         }
@@ -16,7 +16,7 @@ namespace ConsoleEngine.Core.Interface
             for (int i = 0; i < buttons.Count; i++)
                 buttons[i].Draw(graphics);
         }
-        
+
         public void SelectButton(int index)
         {
             for (int i = 0; i < buttons.Count; i++)
