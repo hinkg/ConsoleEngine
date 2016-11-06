@@ -1,18 +1,26 @@
 using System;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace ConsoleEngine.Core.Graphics
 {
     public class GraphicsDevice
     {
+        public List<IObject> objects;
+
         public Tile[] tiles;
 
         public int width, height;
 
-        public GraphicsDevice(int width, int height)
+        public string windowname;
+
+        public GraphicsDevice(int width, int height, string windowname)
         {
+            objects = new List<IObject>();
+
             this.width = width;
             this.height = height;
+            this.windowname = windowname;
 
             Console.CursorVisible = false;
             Console.SetWindowSize(width, height);
@@ -25,9 +33,12 @@ namespace ConsoleEngine.Core.Graphics
                 tiles[i] = new Tile();
         }
 
-        public void Draw(IObject obj)
+        public void Draw()
         {
-            obj.Draw(this);
+            for(int i = 0; i < objects.Count; i++) 
+            {
+                objects[i].Draw(this);
+            } 
         }
 
         public void DrawPixel(int x, int y, char content, ConsoleColor color)
@@ -76,7 +87,9 @@ namespace ConsoleEngine.Core.Graphics
 
             int ms = (int)stopwatch.ElapsedMilliseconds;
             if (ms == 0) ms = 1;
-            Console.Title = $"ConsoleEngine FPS: {1000 / ms} ({ms}ms), updates: {updates}";
+
+
+            Console.Title = $"{windowname} : {1000 / (ms + 10)}fps : {updates} updates";
         }
 
         public class Tile

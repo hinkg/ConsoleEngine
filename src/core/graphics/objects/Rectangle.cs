@@ -18,6 +18,11 @@ namespace ConsoleEngine.Core.Graphics
             transform = new Transform(position);
         }
 
+        public void Add(GraphicsDevice graphics)
+        {
+            graphics.objects.Add(this);
+        }
+
         public void Draw(GraphicsDevice graphics)
         {
             int charOffset = 0;

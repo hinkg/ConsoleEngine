@@ -14,6 +14,11 @@ namespace ConsoleEngine.Core.Graphics
             this.transform = new Transform(position);
         }
 
+        public void Add(GraphicsDevice graphics)
+        {
+            graphics.objects.Add(this);
+        }
+
         public void Draw(GraphicsDevice graphics)
         {
             for (int y = 0; y < lines.Length; y++)
