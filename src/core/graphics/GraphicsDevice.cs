@@ -14,6 +14,9 @@ namespace ConsoleEngine.Core.Graphics
 
         public string windowname;
 
+        private int msCounter = 1000;
+        private int displayMs;
+
         public GraphicsDevice(int width, int height, string windowname)
         {
             objects = new List<IObject>();
@@ -55,6 +58,7 @@ namespace ConsoleEngine.Core.Graphics
         public void Refresh()
         {
             int updates = 0;
+            int draws = 0;
 
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -63,33 +67,77 @@ namespace ConsoleEngine.Core.Graphics
 
             for (int y = 0; y < height; y++)
             {
+                string content = "";
+                ConsoleColor color = ConsoleColor.Black;
+
                 Console.SetCursorPosition(0, y);
 
-                for (int x = 0; x < width; x++)
+                for (int x = 0; x <= width; x++)
                 {
+                    if (x == width)
+                    {
+                        if(content.Length > 0)
+                        {
+                            Console.ForegroundColor = color;
+                            Console.Write(content);
+
+                            draws++;
+                        }
+
+                        break;
+                    }
+
                     Tile tile = tiles[index++];
 
                     if (tile.content != tile.prevContent || tile.color != tile.prevColor)
                     {
-                        Console.SetCursorPosition(x, y);
-                        Console.ForegroundColor = tile.color;
-                        Console.Write(tile.content);
+                        if (tile.color == color)
+                        {
+                            content += tile.content;
+                        }
+                        else
+                        {
+
+                            content = tile.content.ToString();
+                            color = tile.color;
+                            Console.SetCursorPosition(x, y);
+                        }
 
                         tile.prevContent = tile.content;
                         tile.prevColor = tile.color;
 
                         updates++;
                     }
+                    else
+                    {
+                        if(content.Length > 0)
+                        {
+                            Console.ForegroundColor = color;
+                            Console.Write(content);
+
+                            draws++;
+                        }
+
+                        content = "";
+                        color = tile.color;
+                    }
                 }
             }
 
             stopwatch.Stop();
 
-            int ms = (int)stopwatch.ElapsedMilliseconds;
+            int ms = (int)stopwatch.ElapsedMilliseconds + 10;
             if (ms == 0) ms = 1;
 
+            msCounter += ms;
 
-            Console.Title = $"{windowname} : {1000 / (ms + 10)}fps : {updates} updates";
+            while(msCounter >= 1000)
+            {
+                displayMs = ms;
+                msCounter -= 1000;
+            }
+
+            Console.Title = $"{windowname} : {1000 / displayMs}fps ({displayMs}ms) : {updates} updates : {draws} draws";
         }
 
         public class Tile

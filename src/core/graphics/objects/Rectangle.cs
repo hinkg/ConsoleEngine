@@ -27,9 +27,9 @@ namespace ConsoleEngine.Core.Graphics
         {
             int charOffset = 0;
 
-            for (int y = transform.position.y - (size.y / 2); y < transform.position.y + (size.y / 2); y++)
+            for (int y = transform.position.y; y < transform.position.y + size.y; y++)
             {
-                for (int x = transform.position.x - (size.x / 2); x < transform.position.x + (size.x / 2); x++)
+                for (int x = transform.position.x; x < transform.position.x + size.x; x++)
                 {
                     graphics.DrawPixel(x, y, content[charOffset++], color);
 
