@@ -18,6 +18,8 @@ namespace ConsoleGame
 
         private string windowname = "CE Launcher";
 
+        private bool exit;
+
         public Launcher(string[] args)
         {
             graphics = new GraphicsDevice(100, 40, windowname);
@@ -33,7 +35,7 @@ namespace ConsoleGame
         {
             new Image(args[0].ToString() + "/launcher/resources/images/logo.txt", new Vector2(14, 9)).Add(graphics);
             new Outline("',", ConsoleColor.Gray, new Vector2(50, 20), new Vector2(90, 30), new Vector2(8, 4)).Add(graphics);
-            new Button("[Start Game #1]", ConsoleColor.White, ConsoleColor.DarkGray, new Vector2(15, 16), 1).Add(uinterface);
+            new Button("[Start Sandbox]", ConsoleColor.White, ConsoleColor.DarkGray, new Vector2(15, 16), 1).Add(uinterface);
             new Button("[Useless Button]", ConsoleColor.Red, ConsoleColor.DarkGray, new Vector2(15, 18), 2).Add(uinterface);
             new Button("[Exit]", ConsoleColor.White, ConsoleColor.DarkGray, new Vector2(15, 20), 3).Add(uinterface);
 
@@ -44,25 +46,39 @@ namespace ConsoleGame
                 Update();
                 Draw();
                 Thread.Sleep(10);
+
+                if (exit)
+                    break;
             }
+        }
+
+        public void Unload()
+        {
+            exit = true;
+
+            graphics = null;
+            uinterface = null;
+            input.exit = true;
+            input = null;
+
+            Console.Clear();
         }
 
         public void Update()
         {
-            if (input.Key == ConsoleKey.UpArrow)
-                index -= 1;
-
-            if (input.Key == ConsoleKey.DownArrow)
-                index += 1;
-
-            if (index == 0)
-                index = uinterface.buttons.Count;
-
-            if (index == uinterface.buttons.Count + 1)
-                index = 1;
+            if (input.Key == ConsoleKey.UpArrow) index -= 1;
+            if (input.Key == ConsoleKey.DownArrow) index += 1;
+            if (index == 0) index = uinterface.buttons.Count;
+            if (index == uinterface.buttons.Count + 1) index = 1;
 
             if (input.Key == ConsoleKey.Enter)
             {
+                if (index == 1)
+                {
+                    Unload();
+                    new Sandbox(args).Initialize();
+                }
+
                 if (index == 2) PlaySong();
                 if (index == 3) Environment.Exit(0);
             }

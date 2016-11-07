@@ -6,7 +6,9 @@ namespace ConsoleEngine.Core.Input
     public class InputHandler
     {
         public ConsoleKey Key;
-        
+
+        public bool exit;
+
         public InputHandler()
         {
             Thread inputThread = new Thread(new ThreadStart(ListenForInput));
@@ -17,6 +19,9 @@ namespace ConsoleEngine.Core.Input
         {
             while (true)
             {
+                if (exit)
+                    break;
+                    
                 Key = Console.ReadKey(true).Key;
             }
         }
