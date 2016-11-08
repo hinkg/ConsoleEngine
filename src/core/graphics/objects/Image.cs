@@ -5,12 +5,12 @@ namespace ConsoleEngine.Core.Graphics
 {
     public class Image : IObject
     {
-        public string[] lines;
+        public string text;
         public Transform transform;
 
         public Image(string filepath, Vector2 position)
         {
-            lines = File.ReadAllLines(filepath);
+            text = string.Join("\n", File.ReadAllLines(filepath));
             this.transform = new Transform(position);
         }
 
@@ -21,11 +21,51 @@ namespace ConsoleEngine.Core.Graphics
 
         public void Draw(GraphicsDevice graphics)
         {
-            for (int y = 0; y < lines.Length; y++)
+            int x = transform.position.x;
+            int y = transform.position.y;
+
+            bool setColor = false;
+            ConsoleColor color = ConsoleColor.White;
+
+            foreach (char c in text)
             {
-                for (int x = 0; x < lines[y].Length; x++)
+                if (c == '\\' && !setColor)
                 {
-                    graphics.DrawPixel(transform.position.x + x, transform.position.y + y, lines[y].ToCharArray()[x], ConsoleColor.White);
+                    setColor = true;
+                }
+                else if (c == '\n')
+                {
+                    y++;
+                    x = transform.position.x;
+                }
+                else if(setColor && c != '\\')
+                {
+                    switch(char.ToLower(c))
+                    {
+                        case '0': color = ConsoleColor.Black; break;
+                        case '1': color = ConsoleColor.DarkBlue; break;
+                        case '2': color = ConsoleColor.DarkGreen; break;
+                        case '3': color = ConsoleColor.DarkCyan; break;
+                        case '4': color = ConsoleColor.DarkRed; break;
+                        case '5': color = ConsoleColor.DarkMagenta; break;
+                        case '6': color = ConsoleColor.DarkYellow; break;
+                        case '7': color = ConsoleColor.Gray; break;
+                        case '8': color = ConsoleColor.DarkGray; break;
+                        case '9': color = ConsoleColor.Blue; break;
+                        case 'a': color = ConsoleColor.Green; break;
+                        case 'b': color = ConsoleColor.Cyan; break;
+                        case 'c': color = ConsoleColor.Red; break;
+                        case 'd': color = ConsoleColor.Magenta; break;
+                        case 'e': color = ConsoleColor.Yellow; break;
+                        case 'f': color = ConsoleColor.White; break;
+                    }
+                    setColor = false;
+                }
+                else
+                {
+                    graphics.DrawPixel(x, y, c, color);
+                    x++;
+                    setColor = false;
                 }
             }
         }

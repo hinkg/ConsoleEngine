@@ -98,6 +98,10 @@ namespace ConsoleEngine.Core.Graphics
                         }
                         else
                         {
+                            Console.ForegroundColor = color;
+                            Console.Write(content);
+
+                            draws++;
 
                             content = tile.content.ToString();
                             color = tile.color;
