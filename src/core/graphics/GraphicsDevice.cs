@@ -25,6 +25,7 @@ namespace ConsoleEngine.Core.Graphics
             this.height = height;
             this.windowname = windowname;
 
+            Console.Clear();
             Console.CursorVisible = false;
             Console.SetWindowSize(width, height);
             Console.BufferWidth = width + 1;
