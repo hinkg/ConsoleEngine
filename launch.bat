@@ -14,5 +14,4 @@ REM executing "launch" in the console window.
 
 @echo off
 cls
-"C:\Users\62alberi\Program\.NET Core\dotnet" run %~dp0src
-REM "DOTNET-DIRECTORY" run %~dp0src
+"DOTNET-DIRECTORY" run %~dp0src
