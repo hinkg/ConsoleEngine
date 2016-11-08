@@ -22,7 +22,7 @@ namespace ConsoleGame
 
         public Launcher(string[] args)
         {
-            graphics = new GraphicsDevice(100, 40, windowname);
+            graphics = new GraphicsDevice(100, 40, windowname, 150, 60);
             uinterface = new InterfaceManager();
             input = new InputHandler();
 
@@ -66,6 +66,11 @@ namespace ConsoleGame
 
         public void Update()
         {
+            if (input.Key == ConsoleKey.W) graphics.camera.y--;
+            if (input.Key == ConsoleKey.S) graphics.camera.y++;
+            if (input.Key == ConsoleKey.A) graphics.camera.x--;
+            if (input.Key == ConsoleKey.D) graphics.camera.x++;
+
             if (input.Key == ConsoleKey.UpArrow) index -= 1;
             if (input.Key == ConsoleKey.DownArrow) index += 1;
             if (index == 0) index = uinterface.buttons.Count;

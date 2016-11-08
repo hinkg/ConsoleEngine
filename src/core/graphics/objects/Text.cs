@@ -34,7 +34,7 @@ namespace ConsoleEngine.Core.Graphics
                     x = transform.position.x;
                 }
                 else
-                    graphics.DrawPixel(x++, y, c, color);
+                    graphics.SetTile(x++, y, c, color);
             }
         }
     }

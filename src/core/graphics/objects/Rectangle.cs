@@ -31,7 +31,7 @@ namespace ConsoleEngine.Core.Graphics
             {
                 for (int x = transform.position.x; x < transform.position.x + size.x; x++)
                 {
-                    graphics.DrawPixel(x, y, content[charOffset++], color);
+                    graphics.SetTile(x, y, content[charOffset++], color);
 
                     if (charOffset >= content.Length)
                         charOffset = 0;

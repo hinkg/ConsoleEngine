@@ -42,7 +42,7 @@ namespace ConsoleEngine.Core.Graphics
 
             while (true)
             {
-                graphics.DrawPixel(x1, y1, content[charOffset++], color);
+                graphics.SetTile(x1, y1, content[charOffset++], color);
 
                 if (charOffset >= content.Length)
                     charOffset = 0;

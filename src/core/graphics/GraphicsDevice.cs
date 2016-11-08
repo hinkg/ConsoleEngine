@@ -8,22 +8,29 @@ namespace ConsoleEngine.Core.Graphics
     {
         public List<IObject> objects;
 
-        public Tile[] tiles;
+        public Tile[] view, prevView, map;
 
         public int width, height;
+        public int mapWidth, mapHeight;
 
         public string windowname;
+
+        public Vector2 camera;
 
         private int msCounter = 1000;
         private int displayMs;
 
-        public GraphicsDevice(int width, int height, string windowname)
+        public GraphicsDevice(int width, int height, string windowname, int mapWidth, int mapHeight)
         {
             objects = new List<IObject>();
 
             this.width = width;
             this.height = height;
             this.windowname = windowname;
+            this.mapWidth = mapWidth;
+            this.mapHeight = mapHeight;
+
+            camera = new Vector2(0, 0);
 
             Console.Clear();
             Console.CursorVisible = false;
@@ -31,10 +38,17 @@ namespace ConsoleEngine.Core.Graphics
             Console.BufferWidth = width + 1;
             Console.BufferHeight = height;
 
-            tiles = new Tile[width * height];
+            view = new Tile[width * height];
+            prevView = new Tile[view.Length];
+            map = new Tile[mapWidth * mapHeight];
 
-            for (int i = 0; i < tiles.Length; i++)
-                tiles[i] = new Tile();
+            for (int i = 0; i < view.Length; i++)
+            {
+                view[i] = new Tile();
+                prevView[i] = new Tile();
+            }
+            for (int i = 0; i < map.Length; i++)
+                map[i] = new Tile();
         }
 
         public void Draw()
@@ -45,19 +59,39 @@ namespace ConsoleEngine.Core.Graphics
             } 
         }
 
-        public void DrawPixel(int x, int y, char content, ConsoleColor color)
+        public void SetTile(int x, int y, char content, ConsoleColor color)
         {
-            if (0 <= x && x < width
-             && 0 <= y && y < height)
+            if (0 <= x && x < mapWidth
+             && 0 <= y && y < mapHeight)
             {
-                Tile tile = tiles[x + y * width];
+                Tile tile = map[x + y * mapWidth];
                 tile.content = content;
                 tile.color = color;
             }
         }
 
+        public void UpdateView()
+        {
+            if (camera.x < 0) camera.x = 0;
+            if (camera.y < 0) camera.y = 0;
+            if (camera.x > mapWidth  - width)  camera.x = mapWidth  - width; 
+            if (camera.y > mapHeight - height) camera.y = mapHeight - height;
+
+            int index = 0;
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    view[index++] = map[x + camera.x + (y + camera.y) * mapWidth];
+                }
+            }
+        }
+
         public void Refresh()
         {
+            UpdateView();
+
             int updates = 0;
             int draws = 0;
 
@@ -88,9 +122,10 @@ namespace ConsoleEngine.Core.Graphics
                         break;
                     }
 
-                    Tile tile = tiles[index++];
+                    Tile tile = view[index];
+                    Tile prevTile = prevView[index++];
 
-                    if (tile.content != tile.prevContent || tile.color != tile.prevColor)
+                    if (tile.content != prevTile.content || tile.color != prevTile.color)
                     {
                         if (tile.color == color)
                         {
@@ -108,8 +143,8 @@ namespace ConsoleEngine.Core.Graphics
                             Console.SetCursorPosition(x, y);
                         }
 
-                        tile.prevContent = tile.content;
-                        tile.prevColor = tile.color;
+                        prevTile.content = tile.content;
+                        prevTile.color = tile.color;
 
                         updates++;
                     }
@@ -148,10 +183,8 @@ namespace ConsoleEngine.Core.Graphics
         public class Tile
         {
             public char content = ' ';
-            public char prevContent = ' ';
 
             public ConsoleColor color = ConsoleColor.Black;
-            public ConsoleColor prevColor = ConsoleColor.Black;
         }
     }
 }

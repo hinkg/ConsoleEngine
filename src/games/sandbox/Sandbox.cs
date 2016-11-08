@@ -22,7 +22,7 @@ namespace ConsoleGame
 
         public Sandbox(string[] args)
         {
-            graphics = new GraphicsDevice(100, 40, windowname);
+            graphics = new GraphicsDevice(100, 40, windowname, 100, 40);
             uinterface = new InterfaceManager();
             input = new InputHandler();
 
