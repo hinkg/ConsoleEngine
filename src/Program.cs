@@ -2,6 +2,6 @@ namespace ConsoleGame
 {
     public class Program
     {
-        public static void Main(string[] args) => new Launcher(args).Initialize();
+        public static void Main(string[] args) => new Launcher(args).Load();
     }
 }

@@ -2,21 +2,20 @@ using System;
 
 namespace ConsoleEngine.Core 
 {
-    public class Game
+    public abstract class Game
     {
-        public void Draw()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void Draw();
 
-        public void Initialize()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void Load();
 
-        public void Update()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void Unload();
+
+        public abstract void Update();
+
+        public abstract void Quit();
+
+        public virtual void Exit() {}
+
+        public virtual void Save() {} 
     }
 }

@@ -17,11 +17,8 @@ namespace ConsoleEngine.Core
 
         public void ListenForInput()
         {
-            while (true)
+            while (!exit)
             {
-                if (exit)
-                    break;
-                    
                 Key = Console.ReadKey(true).Key;
             }
         }

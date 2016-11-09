@@ -6,121 +6,91 @@ using ConsoleEngine.Objects;
 
 namespace ConsoleGame
 {
-    public class Launcher
+    public class Launcher : Game
     {
         private GraphicsDevice graphics;
         private InterfaceManager uinterface;
         private InputHandler input;
 
-        private string[] args;
-
-        private string windowname = "CE Launcher";
-
         private bool exit;
+        private string[] args;
+        private int index;
 
         public Launcher(string[] args)
         {
-            graphics = new GraphicsDevice(100, 40, windowname, 150, 60);
+            this.args = args;
+            this.index = 1;
+
+            graphics = new GraphicsDevice(100, 40, "CE Launcher 1.0", 150, 90);
             uinterface = new InterfaceManager();
             input = new InputHandler();
-
-            this.args = args;
         }
 
-        int index = 1;
-
-        public void Initialize()
+        public override void Load()
         {
-            new Image(args[0].ToString() + "/launcher/resources/images/logo.txt", new Vector2(14, 9)).Add(graphics);
-            new Outline("',", ConsoleColor.Gray, new Vector2(50, 20), new Vector2(90, 30), new Vector2(8, 4)).Add(graphics);
-            new Button("[Start Sandbox]", ConsoleColor.White, ConsoleColor.DarkGray, new Vector2(15, 16), 1).Add(uinterface);
-            new Button("[Useless Button]", ConsoleColor.Red, ConsoleColor.DarkGray, new Vector2(15, 18), 2).Add(uinterface);
-            new Button("[Exit]", ConsoleColor.White, ConsoleColor.DarkGray, new Vector2(15, 20), 3).Add(uinterface);
+            new Outline("',", ConsoleColor.White, new Vector2(50, 20), new Vector2(90, 36), new Vector2(8, 4)).Add(graphics);
+            new Image(args[0] + "/launcher/resources/images/logo.txt", new Vector2(16, 7)).Add(graphics);
+            new Button("[Launch Sandbox]", ConsoleColor.White, ConsoleColor.DarkGray, new Vector2(16, 13), 1).Add(uinterface);
+            new Button("[Useless Button]", ConsoleColor.White, ConsoleColor.DarkGray, new Vector2(16, 15), 2).Add(uinterface);
+            new Button("[Quit]", ConsoleColor.White, ConsoleColor.DarkGray, new Vector2(16, 17), 3).Add(uinterface);
 
-            uinterface.SelectButton(index);
-
-            while (true)
+            while (!exit)
             {
                 Update();
                 Draw();
-                Thread.Sleep(10);
 
-                if (exit)
-                    break;
+                Thread.Sleep(10);
             }
         }
 
-        public void Unload()
+        public override void Unload()
         {
-            exit = true;
-
             graphics = null;
             uinterface = null;
             input.exit = true;
             input = null;
-
-            Console.Clear();
         }
 
-        public void Update()
+        public override void Quit()
         {
-            if (input.Key == ConsoleKey.W) graphics.camera.y--;
-            if (input.Key == ConsoleKey.S) graphics.camera.y++;
-            if (input.Key == ConsoleKey.A) graphics.camera.x--;
-            if (input.Key == ConsoleKey.D) graphics.camera.x++;
+            Console.Clear();
+            Console.WriteLine("\n  Shutting down...");
+            Thread.Sleep(1000);
+            Environment.Exit(0);
+        }
 
-            if (input.Key == ConsoleKey.UpArrow) index -= 1;
-            if (input.Key == ConsoleKey.DownArrow) index += 1;
-            if (index == 0) index = uinterface.buttons.Count;
-            if (index == uinterface.buttons.Count + 1) index = 1;
+        public override void Update()
+        {
+            if (input.Key == ConsoleKey.UpArrow)
+                index--;
+
+            if (input.Key == ConsoleKey.DownArrow)
+                index++;
+
+            if (index == 0)
+                index = uinterface.buttons.Count;
+
+            if (index == uinterface.buttons.Count + 1)
+                index = 1;
+
+            uinterface.SelectButton(index);
 
             if (input.Key == ConsoleKey.Enter)
             {
-                if (index == 1)
+                if (index == 2)
                 {
-                    Unload();
-                    new Sandbox(args).Initialize();
+                    Quit();
                 }
-
-                if (index == 2) PlaySong();
-                if (index == 3) Environment.Exit(0);
             }
 
             input.Key = ConsoleKey.Clear;
-
-            uinterface.SelectButton(index);
         }
 
-        public Task PlaySong()
+        public override void Draw()
         {
-            Console.Beep(440, 500);
-            Console.Beep(440, 500);
-            Console.Beep(440, 500);
-            Console.Beep(349, 350);
-            Console.Beep(523, 150);
-            Console.Beep(440, 500);
-            Console.Beep(349, 350);
-            Console.Beep(523, 150);
-            Console.Beep(440, 500);
-            Thread.Sleep(500);
-            Console.Beep(659, 500);
-            Console.Beep(659, 500);
-            Console.Beep(659, 500);
-            Console.Beep(698, 350);
-            Console.Beep(523, 150);
-            Console.Beep(415, 500);
-            Console.Beep(349, 350);
-            Console.Beep(523, 150);
-            Console.Beep(440, 500);
-
-            return Task.CompletedTask;
-        }
-
-        public void Draw()
-        {
-            uinterface.Draw(graphics);
-
             graphics.Draw();
+
+            uinterface.Draw(graphics);
 
             graphics.Refresh();
         }
