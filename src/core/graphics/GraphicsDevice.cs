@@ -104,6 +104,7 @@ namespace ConsoleEngine.Core.Graphics
             {
                 string content = "";
                 ConsoleColor color = ConsoleColor.Black;
+                bool noColor = true;
 
                 Console.SetCursorPosition(0, y);
 
@@ -115,6 +116,7 @@ namespace ConsoleEngine.Core.Graphics
                         {
                             Console.ForegroundColor = color;
                             Console.Write(content);
+                            noColor = false;
 
                             draws++;
                         }
@@ -127,7 +129,7 @@ namespace ConsoleEngine.Core.Graphics
 
                     if (tile.content != prevTile.content || tile.color != prevTile.color)
                     {
-                        if (tile.color == color)
+                        if (tile.color == color && !noColor)
                         {
                             content += tile.content;
                         }
@@ -140,6 +142,7 @@ namespace ConsoleEngine.Core.Graphics
 
                             content = tile.content.ToString();
                             color = tile.color;
+                            noColor = false;
                             Console.SetCursorPosition(x, y);
                         }
 
@@ -159,7 +162,8 @@ namespace ConsoleEngine.Core.Graphics
                         }
 
                         content = "";
-                        color = tile.color;
+                        color = ConsoleColor.Black;
+                        noColor = true;
                     }
                 }
             }
