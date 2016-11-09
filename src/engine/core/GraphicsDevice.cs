@@ -99,71 +99,96 @@ namespace ConsoleEngine.Core
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
+            /* This complicated rendering technique tries to be as efficient as possible, by
+             * drawing only what is necessary. Two optimizations exist:
+             *
+             *    1: Text can only be written with one color at a time. So if a tile's color is the
+             *       same as the color before it, it can be rendered together with it, making long
+             *       strings of the same color rendered only once, as opposed to multiple times.
+             *
+             *    2: Writing the same tile every frame makes no difference. If a tile is unchanged
+             *       from the last frame, it can be ignored on the next frame.
+             */
+
+            // Index for getting which tile to render
             int index = 0;
 
+            // For each row on screen
             for (int y = 0; y < height; y++)
             {
+                // For writing consecutive tiles with the same color
                 string content = "";
                 ConsoleColor color = ConsoleColor.Black;
-                bool noColor = true;
 
-                Console.SetCursorPosition(0, y);
-
-                for (int x = 0; x <= width; x++)
+                // For each tile on that row
+                for (int x = 0; x < width; x++)
                 {
-                    if (x == width)
-                    {
-                        if(content.Length > 0)
-                        {
-                            Console.ForegroundColor = color;
-                            Console.Write(content);
-
-                            draws++;
-                        }
-
-                        break;
-                    }
-
+                    // Get tile and its previous state
                     Tile tile = view[index];
-                    Tile prevTile = prevView[index++];
+                    Tile prevTile = prevView[index];
+                    index++;
 
+                    // If the tile has changed since the last frame
                     if (tile.content != prevTile.content || tile.color != prevTile.color)
                     {
-                        if (tile.color == color && !noColor)
+                        // If the tile's color is the same as the consecutive tiles
+                        // and that THERE IS content in the first place
+                        if (tile.color == color && content.Length > 0)
                         {
+                            // Add the tile's content to the consecutive tiles
                             content += tile.content;
                         }
-                        else
+                        else // If the tile has a different color as the consecutive tiles
+                             // or that there is no content
                         {
-                            Console.ForegroundColor = color;
-                            Console.Write(content);
+                            // If there is content to write
+                            if (content.Length > 0)
+                            {
+                                // Set the color and write it
+                                Console.ForegroundColor = color;
+                                Console.Write(content);
 
-                            draws++;
+                                // Count the render
+                                draws++;
+                            }
 
+                            // Create new consecutive tiles
                             content = tile.content.ToString();
                             color = tile.color;
-                            noColor = false;
+
+                            // Prepare cursor position for next render
                             Console.SetCursorPosition(x, y);
                         }
 
+                        // Update the tile, current content becomes previous content
                         prevTile.content = tile.content;
                         prevTile.color = tile.color;
 
+                        // Count the update
                         updates++;
                     }
-                    else
+                    else if(content.Length > 0) // If the tile is unchanged, and there is content to render
                     {
-                        if(content.Length > 0)
-                        {
-                            Console.ForegroundColor = color;
-                            Console.Write(content);
+                        // Set the color and write it
+                        Console.ForegroundColor = color;
+                        Console.Write(content);
 
-                            draws++;
-                        }
+                        // Count the render
+                        draws++;
 
+                        // Clear the content
                         content = "";
-                        color = ConsoleColor.Black;
-                        noColor = true;
+                    }
+
+                    // If we are on the end of the row, and there is unrendered content
+                    if (x == width - 1 && content.Length > 0)
+                    {
+                        // Set the color and write it
+                        Console.ForegroundColor = color;
+                        Console.Write(content);
+
+                        // Count the render
+                        draws++;
                     }
                 }
             }
