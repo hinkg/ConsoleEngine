@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using ConsoleEngine.Objects;
 
-namespace ConsoleEngine.Core.Interface
+namespace ConsoleEngine.Core
 {
     public class InterfaceManager
     {
@@ -11,7 +12,7 @@ namespace ConsoleEngine.Core.Interface
             buttons = new List<Button>();
         }
 
-        public void Draw(Graphics.GraphicsDevice graphics)
+        public void Draw(GraphicsDevice graphics)
         {
             for (int i = 0; i < buttons.Count; i++)
                 buttons[i].Draw(graphics);

@@ -1,12 +1,13 @@
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
+using ConsoleEngine.Objects;
 
-namespace ConsoleEngine.Core.Graphics
+namespace ConsoleEngine.Core
 {
     public class GraphicsDevice
     {
-        public List<IObject> objects;
+        public List<IGraphicsObject> objects;
 
         public Tile[] view, prevView, map;
 
@@ -22,7 +23,7 @@ namespace ConsoleEngine.Core.Graphics
 
         public GraphicsDevice(int width, int height, string windowname, int mapWidth, int mapHeight)
         {
-            objects = new List<IObject>();
+            objects = new List<IGraphicsObject>();
 
             this.width = width;
             this.height = height;
@@ -116,7 +117,6 @@ namespace ConsoleEngine.Core.Graphics
                         {
                             Console.ForegroundColor = color;
                             Console.Write(content);
-                            noColor = false;
 
                             draws++;
                         }

@@ -1,8 +1,9 @@
 using System;
+using ConsoleEngine.Core;
 
-namespace ConsoleEngine.Core.Graphics
+namespace ConsoleEngine.Objects
 {
-    public class Text : IObject
+    public class Text : IGraphicsObject
     {
         public string content;
         public ConsoleColor color;

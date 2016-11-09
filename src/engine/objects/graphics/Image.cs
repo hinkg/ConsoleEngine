@@ -1,9 +1,10 @@
 using System;
 using System.IO;
+using ConsoleEngine.Core;
 
-namespace ConsoleEngine.Core.Graphics
+namespace ConsoleEngine.Objects
 {
-    public class Image : IObject
+    public class Image : IGraphicsObject
     {
         public string text;
         public Transform transform;

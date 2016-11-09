@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 
-namespace ConsoleEngine.Core.Input
+namespace ConsoleEngine.Core
 {
     public class InputHandler
     {

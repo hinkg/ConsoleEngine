@@ -1,9 +1,9 @@
 using System;
-using ConsoleEngine.Core.Graphics;
+using ConsoleEngine.Core;
 
-namespace ConsoleEngine.Core.Interface
+namespace ConsoleEngine.Objects
 {
-    public class Button : IInterface
+    public class Button : IInterfaceObject
     {
         public string content;
         public ConsoleColor selectedColor;
@@ -22,7 +22,7 @@ namespace ConsoleEngine.Core.Interface
             transform = new Transform(position);
         }
 
-        public override void Draw(GraphicsDevice graphics)
+        public void Draw(GraphicsDevice graphics)
         {
             int x = transform.position.x;
             int y = transform.position.y;
@@ -42,17 +42,17 @@ namespace ConsoleEngine.Core.Interface
             }
         }
 
-        public override void Select()
+        public void Select()
         {
             selected = true;
         }
 
-        public override void Unselect()
+        public void Unselect()
         {
             selected = false;
         }
 
-        public override void Add(InterfaceManager uinterface)
+        public void Add(InterfaceManager uinterface)
         {
             uinterface.buttons.Add(this);
         }

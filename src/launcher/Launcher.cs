@@ -2,9 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using ConsoleEngine.Core;
-using ConsoleEngine.Core.Graphics;
-using ConsoleEngine.Core.Input;
-using ConsoleEngine.Core.Interface;
+using ConsoleEngine.Objects;
 
 namespace ConsoleGame
 {
