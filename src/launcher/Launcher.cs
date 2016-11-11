@@ -26,7 +26,8 @@ namespace ConsoleGame
             graphics = new GraphicsDevice(100, 40, "CE Launcher 1.0");
             uinterface = new InterfaceManager();
             input = new InputHandler();
-            world1 = new World(new Vector2(150, 90));
+
+            world1 = new World(new Vector2(100, 40));
         }
 
         public override void Load()
