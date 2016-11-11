@@ -12,6 +12,8 @@ namespace ConsoleGame
         private InterfaceManager uinterface;
         private InputHandler input;
 
+        private World world1;
+
         private bool exit;
         private string[] args;
         private int index;
@@ -21,15 +23,16 @@ namespace ConsoleGame
             this.args = args;
             this.index = 1;
 
-            graphics = new GraphicsDevice(100, 40, "CE Launcher 1.0", 150, 90);
+            graphics = new GraphicsDevice(100, 40, "CE Launcher 1.0");
             uinterface = new InterfaceManager();
             input = new InputHandler();
+            world1 = new World(new Vector2(150, 90));
         }
 
         public override void Load()
         {
-            new Outline("',", ConsoleColor.White, new Vector2(50, 20), new Vector2(90, 36), new Vector2(8, 4)).Add(graphics);
-            new Image(args[0] + "/launcher/resources/images/logo.txt", new Vector2(16, 7)).Add(graphics);
+            new Outline("',", ConsoleColor.White, new Vector2(50, 20), new Vector2(90, 36), new Vector2(8, 4)).Add(world1);
+            new Image(args[0] + "/launcher/resources/images/logo.txt", new Vector2(16, 7)).Add(world1);
             new Button("[Launch Sandbox]", ConsoleColor.White, ConsoleColor.DarkGray, new Vector2(16, 13), 1).Add(uinterface);
             new Button("[Useless Button]", ConsoleColor.White, ConsoleColor.DarkGray, new Vector2(16, 15), 2).Add(uinterface);
             new Button("[Quit]", ConsoleColor.White, ConsoleColor.DarkGray, new Vector2(16, 17), 3).Add(uinterface);
@@ -77,7 +80,7 @@ namespace ConsoleGame
 
             if (input.Key == ConsoleKey.Enter)
             {
-                if (index == 2)
+                if (index == 3)
                 {
                     Quit();
                 }
@@ -88,11 +91,11 @@ namespace ConsoleGame
 
         public override void Draw()
         {
-            graphics.Draw();
+            world1.Draw();
 
-            uinterface.Draw(graphics);
+            uinterface.Draw(world1);
 
-            graphics.Refresh();
+            graphics.Refresh(world1);
         }
     }
 }

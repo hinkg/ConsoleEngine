@@ -22,7 +22,7 @@ namespace ConsoleEngine.Objects
             transform = new Transform(position);
         }
 
-        public void Draw(GraphicsDevice graphics)
+        public void Draw(World world)
         {
             int x = transform.position.x;
             int y = transform.position.y;
@@ -38,7 +38,7 @@ namespace ConsoleEngine.Objects
                     x = transform.position.x;
                 }
                 else
-                    graphics.SetTile(x++, y, c, color);
+                    world.SetTile(x++, y, c, color);
             }
         }
 

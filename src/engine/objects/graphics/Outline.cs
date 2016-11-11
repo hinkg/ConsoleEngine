@@ -21,12 +21,12 @@ namespace ConsoleEngine.Objects
             transform = new Transform(position);
         }
 
-        public void Add(GraphicsDevice graphics)
+        public void Add(World world)
         {
-            graphics.objects.Add(this);
+            world.objects.Add(this);
         }
 
-        public void Draw(GraphicsDevice graphics)
+        public void Draw(World world)
         {
             Vector2 spaceStart = new Vector2(
                 (transform.position.x - size.x / 2) + thickness.x,
@@ -50,7 +50,7 @@ namespace ConsoleEngine.Objects
                             charOffset = 0;
                     }
 
-                    graphics.SetTile(x, y, content[charOffset++], color);
+                    world.SetTile(x, y, content[charOffset++], color);
 
                     if (charOffset >= content.Length)
                         charOffset = 0;

@@ -15,12 +15,12 @@ namespace ConsoleEngine.Objects
             this.transform = new Transform(position);
         }
 
-        public void Add(GraphicsDevice graphics)
+        public void Add(World world)
         {
-            graphics.objects.Add(this);
+            world.objects.Add(this);
         }
 
-        public void Draw(GraphicsDevice graphics)
+        public void Draw(World world)
         {
             int x = transform.position.x;
             int y = transform.position.y;
@@ -60,11 +60,12 @@ namespace ConsoleEngine.Objects
                         case 'e': color = ConsoleColor.Yellow; break;
                         case 'f': color = ConsoleColor.White; break;
                     }
+                    
                     setColor = false;
                 }
                 else
                 {
-                    graphics.SetTile(x, y, c, color);
+                    world.SetTile(x, y, c, color);
                     x++;
                     setColor = false;
                 }

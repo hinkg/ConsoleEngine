@@ -12,10 +12,10 @@ namespace ConsoleEngine.Core
             buttons = new List<Button>();
         }
 
-        public void Draw(GraphicsDevice graphics)
+        public void Draw(World world)
         {
             for (int i = 0; i < buttons.Count; i++)
-                buttons[i].Draw(graphics);
+                buttons[i].Draw(world);
         }
 
         public void SelectButton(int index)

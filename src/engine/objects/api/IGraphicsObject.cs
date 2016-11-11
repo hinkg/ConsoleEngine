@@ -4,8 +4,8 @@ namespace ConsoleEngine.Objects
 {
     public interface IGraphicsObject
     {
-        void Draw(GraphicsDevice graphics);
+        void Draw(World world);
 
-        void Add(GraphicsDevice graphics);
+        void Add(World world);
     }
 }

@@ -4,10 +4,7 @@ namespace ConsoleEngine.Objects
 {
     public interface IInterfaceObject
     {
-        void Draw(GraphicsDevice graphics);
-
-        void Select();
-        void Unselect();
+        void Draw(World world);
 
         void Add(InterfaceManager uinterface);
     }

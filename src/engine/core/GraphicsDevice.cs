@@ -7,12 +7,9 @@ namespace ConsoleEngine.Core
 {
     public class GraphicsDevice
     {
-        public List<IGraphicsObject> objects;
-
-        public Tile[] view, prevView, map;
+        public Tile[] view, prevView;
 
         public int width, height;
-        public int mapWidth, mapHeight;
 
         public string windowname;
 
@@ -21,15 +18,11 @@ namespace ConsoleEngine.Core
         private int msCounter = 1000;
         private int displayMs;
 
-        public GraphicsDevice(int width, int height, string windowname, int mapWidth, int mapHeight)
+        public GraphicsDevice(int width, int height, string windowname)
         {
-            objects = new List<IGraphicsObject>();
-
             this.width = width;
             this.height = height;
             this.windowname = windowname;
-            this.mapWidth = mapWidth;
-            this.mapHeight = mapHeight;
 
             camera = new Vector2(0, 0);
 
@@ -41,42 +34,20 @@ namespace ConsoleEngine.Core
 
             view = new Tile[width * height];
             prevView = new Tile[view.Length];
-            map = new Tile[mapWidth * mapHeight];
 
             for (int i = 0; i < view.Length; i++)
             {
                 view[i] = new Tile();
                 prevView[i] = new Tile();
             }
-            for (int i = 0; i < map.Length; i++)
-                map[i] = new Tile();
         }
 
-        public void Draw()
-        {
-            for(int i = 0; i < objects.Count; i++) 
-            {
-                objects[i].Draw(this);
-            } 
-        }
-
-        public void SetTile(int x, int y, char content, ConsoleColor color)
-        {
-            if (0 <= x && x < mapWidth
-             && 0 <= y && y < mapHeight)
-            {
-                Tile tile = map[x + y * mapWidth];
-                tile.content = content;
-                tile.color = color;
-            }
-        }
-
-        public void UpdateView()
+        public void UpdateView(World world)
         {
             if (camera.x < 0) camera.x = 0;
             if (camera.y < 0) camera.y = 0;
-            if (camera.x > mapWidth  - width)  camera.x = mapWidth  - width; 
-            if (camera.y > mapHeight - height) camera.y = mapHeight - height;
+            if (camera.x > world.size.x - width) camera.x = world.size.x - width;
+            if (camera.y > world.size.y - height) camera.y = world.size.y - height;
 
             int index = 0;
 
@@ -84,14 +55,14 @@ namespace ConsoleEngine.Core
             {
                 for (int x = 0; x < width; x++)
                 {
-                    view[index++] = map[x + camera.x + (y + camera.y) * mapWidth];
+                    view[index++] = world.map[x + camera.x + (y + camera.y) * world.size.x];
                 }
             }
         }
 
-        public void Refresh()
+        public void Refresh(World world)
         {
-            UpdateView();
+            UpdateView(world);
 
             int updates = 0;
             int draws = 0;
@@ -167,7 +138,7 @@ namespace ConsoleEngine.Core
                         // Count the update
                         updates++;
                     }
-                    else if(content.Length > 0) // If the tile is unchanged, and there is content to render
+                    else if (content.Length > 0) // If the tile is unchanged, and there is content to render
                     {
                         // Set the color and write it
                         Console.ForegroundColor = color;
@@ -200,20 +171,13 @@ namespace ConsoleEngine.Core
 
             msCounter += ms;
 
-            while(msCounter >= 1000)
+            while (msCounter >= 1000)
             {
                 displayMs = ms;
                 msCounter -= 1000;
             }
 
             Console.Title = $"{windowname} : {1000 / displayMs}fps ({displayMs}ms) : {updates} updates : {draws} draws";
-        }
-
-        public class Tile
-        {
-            public char content = ' ';
-
-            public ConsoleColor color = ConsoleColor.Black;
         }
     }
 }

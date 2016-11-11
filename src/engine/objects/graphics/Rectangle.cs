@@ -19,12 +19,12 @@ namespace ConsoleEngine.Objects
             transform = new Transform(position);
         }
 
-        public void Add(GraphicsDevice graphics)
+        public void Add(World world)
         {
-            graphics.objects.Add(this);
+            world.objects.Add(this);
         }
 
-        public void Draw(GraphicsDevice graphics)
+        public void Draw(World world)
         {
             int charOffset = 0;
 
@@ -32,7 +32,7 @@ namespace ConsoleEngine.Objects
             {
                 for (int x = transform.position.x; x < transform.position.x + size.x; x++)
                 {
-                    graphics.SetTile(x, y, content[charOffset++], color);
+                    world.SetTile(x, y, content[charOffset++], color);
 
                     if (charOffset >= content.Length)
                         charOffset = 0;
