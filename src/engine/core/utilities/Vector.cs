@@ -12,4 +12,19 @@ namespace ConsoleEngine.Core
             y = Y;
         }
     }
+
+    public class Vector3
+    {
+        public float x { get; set; }
+        public float y { get; set; }
+        public float z { get; set; }
+
+        //Constructor
+        public Vector3(float X, float Y, float Z)
+        {
+            x = X;
+            y = Y;
+            z = Z;
+        }
+    }
 }

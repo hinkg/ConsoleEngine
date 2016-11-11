@@ -33,7 +33,7 @@ namespace ConsoleGame
         {
             new Outline("',", ConsoleColor.White, new Vector2(50, 20), new Vector2(90, 36), new Vector2(8, 4)).Add(world1);
             new Image(args[0] + "/launcher/resources/images/logo.txt", new Vector2(16, 7)).Add(world1);
-            new Button("[Launch Sandbox]", ConsoleColor.White, ConsoleColor.DarkGray, new Vector2(16, 13), 1).Add(uinterface);
+            new Button("[Launch Stars]", ConsoleColor.White, ConsoleColor.DarkGray, new Vector2(16, 13), 1).Add(uinterface);
             new Button("[Useless Button]", ConsoleColor.White, ConsoleColor.DarkGray, new Vector2(16, 15), 2).Add(uinterface);
             new Button("[Quit]", ConsoleColor.White, ConsoleColor.DarkGray, new Vector2(16, 17), 3).Add(uinterface);
 
@@ -80,6 +80,12 @@ namespace ConsoleGame
 
             if (input.Key == ConsoleKey.Enter)
             {
+                if (index == 1)
+                {
+                    Unload();
+                    new Stars(args).Load();
+                }
+
                 if (index == 3)
                 {
                     Quit();
