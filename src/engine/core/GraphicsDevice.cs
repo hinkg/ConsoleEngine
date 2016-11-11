@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 
 namespace ConsoleEngine.Core
 {
@@ -13,8 +12,9 @@ namespace ConsoleEngine.Core
 
         public Vector2 camera;
 
-        private int msCounter = 1000;
-        private int displayMs;
+        private float msCounter = 1000;
+        private String displayMs, displayFps;
+        private long previousTime = DateTime.Now.Ticks;
 
         public GraphicsDevice(int width, int height, string windowname)
         {
@@ -64,9 +64,6 @@ namespace ConsoleEngine.Core
 
             int updates = 0;
             int draws = 0;
-
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
 
             /* This complicated rendering technique tries to be as efficient as possible, by
              * drawing only what is necessary. Two optimizations exist:
@@ -162,20 +159,20 @@ namespace ConsoleEngine.Core
                 }
             }
 
-            stopwatch.Stop();
-
-            int ms = (int)stopwatch.ElapsedMilliseconds + 10;
-            if (ms == 0) ms = 1;
+            long time = DateTime.Now.Ticks;
+            float ms = (time - previousTime) / 10000f;
+            previousTime = time;
 
             msCounter += ms;
 
             while (msCounter >= 1000)
             {
-                displayMs = ms;
+                displayMs = string.Format("{0:0.0}", ms);
+                displayFps = string.Format("{0:0.0}", 1000 / ms);
                 msCounter -= 1000;
             }
 
-            Console.Title = $"{windowname} : {1000 / displayMs}fps ({displayMs}ms) : {updates} updates : {draws} draws";
+            Console.Title = $"{windowname} : {displayFps}fps ({displayMs}ms) : {updates} updates : {draws} draws";
         }
     }
 }

@@ -59,7 +59,7 @@ namespace ConsoleGame
 
                 frameCounter++;
 
-                Thread.Sleep(10);
+                Thread.Sleep(3);
             }
         }
 
