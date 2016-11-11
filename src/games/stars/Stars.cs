@@ -7,11 +7,11 @@ namespace ConsoleGame
 {
     public class Stars : Game
     {
-        private Random random = new Random();
+        private readonly Random random = new Random();
 
-        private float SPREAD = 64;
-        private float SPEED = 0.75f;
-        private int STARS = 100;
+        private static readonly float SPREAD = 64;
+        private static readonly float SPEED = 0.75f;
+        private static readonly int STARS = 100;
 
         private string[] args;
 
@@ -46,7 +46,7 @@ namespace ConsoleGame
             input = new InputHandler();
 
             new Rectangle(" ", ConsoleColor.Black, new Vector2(100, 40), new Vector2(0, 0)).Add(world);
-            exitInfoText = new Text("Hold escape to go back.", ConsoleColor.Green, new Vector2(1, 1));
+            exitInfoText = new Text("Press escape to go back.", ConsoleColor.Green, new Vector2(1, 1));
             exitInfoText.Add(world);
 
             while (!exit)
@@ -82,7 +82,9 @@ namespace ConsoleGame
 
         public override void Update()
         {
-            if(input.Key == ConsoleKey.Escape)
+            ConsoleKey key = input.GetKey();
+
+            if(key == ConsoleKey.Escape)
             {
                 Unload();
                 new Launcher(args).Load();
@@ -106,23 +108,25 @@ namespace ConsoleGame
                 if(x < 0 || x >= 100 || y < 0 || y >= 40)
                     RandomizeStar(i);
                 else
-                    trail[x,y] = 7;
+                    trail[x,y] = 6;
             }
 
             for (int y = 0; y < 40; y++)
                 for (int x = 0; x < 100; x++)
                 {
+                    if (trail[x,y] == 0)
+                        continue;
+
                     ConsoleColor color = ConsoleColor.Black;
                     char content = ' ';
 
                     switch (trail[x,y])
                     {
-                        case 7: content = ','; color = ConsoleColor.White; break;
-                        case 6: content = ','; color = ConsoleColor.Yellow; break;
-                        case 5: content = '.'; color = ConsoleColor.Yellow; break;
-                        case 4: content = '.'; color = ConsoleColor.Red; break;
+                        case 6: content = ','; color = ConsoleColor.White; break;
+                        case 5: content = ','; color = ConsoleColor.Yellow; break;
+                        case 4: content = '.'; color = ConsoleColor.Yellow; break;
                         case 3: content = '.'; color = ConsoleColor.Red; break;
-                        case 2: content = '.'; color = ConsoleColor.DarkRed; break;
+                        case 2: content = '.'; color = ConsoleColor.Red; break;
                         case 1: content = '.'; color = ConsoleColor.DarkRed; break;
                     }
 

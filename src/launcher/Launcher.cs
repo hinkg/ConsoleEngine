@@ -51,7 +51,6 @@ namespace ConsoleGame
         {
             graphics = null;
             uinterface = null;
-            input.exit = true;
             input = null;
         }
 
@@ -65,10 +64,12 @@ namespace ConsoleGame
 
         public override void Update()
         {
-            if (input.Key == ConsoleKey.UpArrow)
+            ConsoleKey key = input.GetKey();
+
+            if (key == ConsoleKey.UpArrow)
                 index--;
 
-            if (input.Key == ConsoleKey.DownArrow)
+            if (key == ConsoleKey.DownArrow)
                 index++;
 
             if (index == 0)
@@ -79,7 +80,7 @@ namespace ConsoleGame
 
             uinterface.SelectButton(index);
 
-            if (input.Key == ConsoleKey.Enter)
+            if (key == ConsoleKey.Enter)
             {
                 if (index == 1)
                 {
@@ -92,8 +93,6 @@ namespace ConsoleGame
                     Quit();
                 }
             }
-
-            input.Key = ConsoleKey.Clear;
         }
 
         public override void Draw()
