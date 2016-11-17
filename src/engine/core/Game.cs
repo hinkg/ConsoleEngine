@@ -1,21 +1,72 @@
 using System;
+using System.Threading;
 
 namespace ConsoleEngine.Core 
 {
     public abstract class Game
     {
-        public abstract void Draw();
+        protected string[] args;
 
-        public abstract void Load();
+        protected bool isRunning;
 
-        public abstract void Unload();
+        protected int frameCounter;
 
-        public abstract void Update();
+        public Game(string[] args)
+        {
+            this.args = args; 
+        }
 
-        public abstract void Quit();
+        public void Start()
+        {
+            if(!isRunning)
+            {
+                Load();
 
-        public virtual void Exit() {}
+                isRunning = true;
 
-        public virtual void Save() {} 
+                while(isRunning)
+                {
+                    Update();
+
+                    // The game usually unloads in the Update method, so we avoid null errors here
+                    if(isRunning)
+                    {
+                        Draw();
+                        frameCounter++;
+                    }
+                }
+            }
+        }
+
+        public void Stop()
+        {
+            if(isRunning)
+            {
+                isRunning = false;
+                Unload();
+
+                Console.Clear();
+            }
+        }
+
+        protected void ChangeGame(Game game)
+        {
+            if(isRunning)
+            {
+                isRunning = false;
+                Unload();
+
+                game.args = args;
+                game.Start();
+            }
+        }
+
+        protected abstract void Load();
+
+        protected abstract void Unload();
+
+        protected abstract void Update();
+
+        protected abstract void Draw();
     }
 }

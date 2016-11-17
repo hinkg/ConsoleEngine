@@ -7,15 +7,13 @@ namespace ConsoleGame
 {
     public class Stars : Game
     {
-        private readonly Random random = new Random();
-
         private static readonly float SPREAD = 64;
         private static readonly float SPEED = 0.75f;
         private static readonly int STARS = 100;
 
         private string[] args;
 
-        private int frameCounter;
+        private Random random;
 
         private Vector3[] stars;
         private int[,] trail;
@@ -26,15 +24,12 @@ namespace ConsoleGame
 
         private Text exitInfoText;
 
-        private bool exit;
+        public Stars(string[] args) : base(args) {}
 
-        public Stars(string[] args)
+        protected override void Load()
         {
-            this.args = args;
-        }
+            random = new Random();
 
-        public override void Load()
-        {
             stars = new Vector3[STARS];
             trail = new int[100,40];
 
@@ -48,50 +43,40 @@ namespace ConsoleGame
             new Rectangle(" ", ConsoleColor.Black, new Vector2(100, 40), new Vector2(0, 0)).Add(world);
             exitInfoText = new Text("Press escape to go back.", ConsoleColor.Green, new Vector2(1, 1));
             exitInfoText.Add(world);
-
-            while (!exit)
-            {
-                if (frameCounter == 200)
-                    world.objects.Remove(exitInfoText);
-
-                Update();
-                Draw();
-
-                frameCounter++;
-
-                Thread.Sleep(3);
-            }
         }
 
-        public override void Unload()
+        protected override void Unload()
         {
             stars = null;
             graphics = null;
-
-            exit = true;
+            world = null;
         }
 
-        public void RandomizeStar(int star)
+        private void RandomizeStar(int star)
         {
             stars[star] = new Vector3(
                 2 * ((float)random.NextDouble() - 0.5f) * SPREAD,
                 2 * ((float)random.NextDouble() - 0.5f) * SPREAD,
-                ((float)random.NextDouble() - 0.000001f) * SPREAD
+                ((float)random.NextDouble() + 0.000001f) * SPREAD
             );
         }
 
-        public override void Update()
+        protected override void Update()
         {
+            Thread.Sleep(3);
+
+            if (frameCounter == 200)
+                world.objects.Remove(exitInfoText);
+
             ConsoleKey key = input.GetKey();
 
             if(key == ConsoleKey.Escape)
             {
-                Unload();
-                new Launcher(args).Load();
+                ChangeGame(new Launcher(args));
             }
         }
 
-        public override void Draw()
+        protected override void Draw()
         {
             world.Draw();
 
@@ -138,7 +123,5 @@ namespace ConsoleGame
 
             graphics.Refresh(world);
         }
-
-        public override void Quit() {}
     }
 }

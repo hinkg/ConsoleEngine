@@ -14,56 +14,38 @@ namespace ConsoleGame
 
         private World world1;
 
-        private bool exit;
-        private string[] args;
         private int index;
 
-        public Launcher(string[] args)
+        public Launcher(string[] args) : base(args) {}
+
+        protected override void Load()
         {
-            this.args = args;
-            this.index = 1;
+            index = 1;
 
             graphics = new GraphicsDevice(100, 40, "CE Launcher 1.0");
             uinterface = new InterfaceManager();
             input = new InputHandler();
 
             world1 = new World(new Vector2(100, 40));
-        }
 
-        public override void Load()
-        {
             new Outline("',", ConsoleColor.White, new Vector2(50, 20), new Vector2(90, 36), new Vector2(8, 4)).Add(world1);
             new Image(args[0] + "/launcher/resources/images/logo.txt", new Vector2(16, 7)).Add(world1);
             new Button("[Launch Stars]", ConsoleColor.White, ConsoleColor.DarkGray, new Vector2(16, 13), 1).Add(uinterface);
             new Button("[Useless Button]", ConsoleColor.White, ConsoleColor.DarkGray, new Vector2(16, 15), 2).Add(uinterface);
             new Button("[Quit]", ConsoleColor.White, ConsoleColor.DarkGray, new Vector2(16, 17), 3).Add(uinterface);
-
-            while (!exit)
-            {
-                Update();
-                Draw();
-
-                Thread.Sleep(10);
-            }
         }
 
-        public override void Unload()
+        protected override void Unload()
         {
             graphics = null;
             uinterface = null;
             input = null;
         }
 
-        public override void Quit()
+        protected override void Update()
         {
-            Console.Clear();
-            Console.WriteLine("\n  Shutting down...");
-            Thread.Sleep(1000);
-            Environment.Exit(0);
-        }
+            Thread.Sleep(10);
 
-        public override void Update()
-        {
             ConsoleKey key = input.GetKey();
 
             if (key == ConsoleKey.UpArrow)
@@ -84,18 +66,17 @@ namespace ConsoleGame
             {
                 if (index == 1)
                 {
-                    Unload();
-                    new Stars(args).Load();
+                    ChangeGame(new Stars(args));
                 }
 
                 if (index == 3)
                 {
-                    Quit();
+                    Stop();
                 }
             }
         }
 
-        public override void Draw()
+        protected override void Draw()
         {
             world1.Draw();
 
