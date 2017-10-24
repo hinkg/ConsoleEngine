@@ -1,5 +1,5 @@
 using System;
-using ConsoleEngine.Core;
+using ConsoleEngine;
 
 namespace ConsoleEngine.Objects
 {
@@ -26,10 +26,10 @@ namespace ConsoleEngine.Objects
 
         public void Draw(World world)
         {
-            int x1 = transform.position.x;
-            int y1 = transform.position.y;
-            int x2 = transform.position.x + size.x - 1;
-            int y2 = transform.position.y + size.y - 1;
+            int x1 = transform.Position.X;
+            int y1 = transform.Position.Y;
+            int x2 = transform.Position.X + size.X - 1;
+            int y2 = transform.Position.Y + size.Y - 1;
 
             int dx = Math.Abs(x2 - x1);
             int dy = Math.Abs(y2 - y1);
@@ -46,10 +46,14 @@ namespace ConsoleEngine.Objects
                 world.SetTile(x1, y1, content[charOffset++], color);
 
                 if (charOffset >= content.Length)
+                {
                     charOffset = 0;
+                }
 
                 if (x1 == x2 && y1 == y2)
+                {
                     break;
+                }
 
                 int e2 = 2 * err;
 

@@ -1,15 +1,15 @@
-namespace ConsoleEngine.Core
+namespace ConsoleEngine
 {
     public class Vector2
     {
-        public int x { get; set; }
-        public int y { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
 
         //Constructor
         public Vector2(int X, int Y)
         {
-            x = X;
-            y = Y;
+            this.X = X;
+            this.Y = Y;
         }
     }
 

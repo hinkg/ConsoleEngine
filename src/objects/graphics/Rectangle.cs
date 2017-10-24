@@ -1,5 +1,5 @@
 using System;
-using ConsoleEngine.Core;
+using ConsoleEngine;
 
 namespace ConsoleEngine.Objects
 {
@@ -28,14 +28,16 @@ namespace ConsoleEngine.Objects
         {
             int charOffset = 0;
 
-            for (int y = transform.position.y; y < transform.position.y + size.y; y++)
+            for (int y = transform.Position.Y; y < transform.Position.Y + size.Y; y++)
             {
-                for (int x = transform.position.x; x < transform.position.x + size.x; x++)
+                for (int x = transform.Position.X; x < transform.Position.X + size.X; x++)
                 {
                     world.SetTile(x, y, content[charOffset++], color);
 
                     if (charOffset >= content.Length)
+                    {
                         charOffset = 0;
+                    }
                 }
             }
         }

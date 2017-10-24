@@ -1,4 +1,4 @@
-using ConsoleEngine.Core;
+using ConsoleEngine;
 
 namespace ConsoleEngine.Objects
 {

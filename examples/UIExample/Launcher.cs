@@ -1,13 +1,14 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using ConsoleEngine.Core;
+using ConsoleEngine;
 using ConsoleEngine.Objects;
 
-namespace ConsoleGame
+namespace UIExample
 {
-    public class Launcher : Game
+    public class UIExample //: Game
     {
+        /*
         private GraphicsDevice graphics;
         private InterfaceManager uinterface;
         private InputHandler input;
@@ -84,5 +85,6 @@ namespace ConsoleGame
 
             graphics.Refresh(world1);
         }
+        */
     }
 }

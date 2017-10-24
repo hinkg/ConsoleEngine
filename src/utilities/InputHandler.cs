@@ -1,6 +1,6 @@
 using System;
 
-namespace ConsoleEngine.Core
+namespace ConsoleEngine
 {
     public class InputHandler
     {

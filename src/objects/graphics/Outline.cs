@@ -1,5 +1,5 @@
 using System;
-using ConsoleEngine.Core;
+using ConsoleEngine;
 
 namespace ConsoleEngine.Objects
 {
@@ -29,31 +29,37 @@ namespace ConsoleEngine.Objects
         public void Draw(World world)
         {
             Vector2 spaceStart = new Vector2(
-                (transform.position.x - size.x / 2) + thickness.x,
-                (transform.position.y - size.y / 2) + thickness.y);
+                (transform.Position.X - size.X / 2) + thickness.X,
+                (transform.Position.Y - size.Y / 2) + thickness.Y);
 
             Vector2 spaceEnd = new Vector2(
-                (transform.position.x + size.x / 2) - thickness.x,
-                (transform.position.y + size.y / 2) - thickness.y);
+                (transform.Position.X + size.X / 2) - thickness.X,
+                (transform.Position.Y + size.Y / 2) - thickness.Y);
 
             int charOffset = 0;
 
-            for (int y = transform.position.y - (size.y / 2); y < transform.position.y + (size.y / 2); y++)
+            for (int y = transform.Position.Y - (size.Y / 2); y < transform.Position.Y + (size.Y / 2); y++)
             {
-                for (int x = transform.position.x - (size.x / 2); x < transform.position.x + (size.x / 2); x++)
+                for (int x = transform.Position.X - (size.X / 2); x < transform.Position.X + (size.X / 2); x++)
                 {
-                    if (spaceStart.y <= y && y < spaceEnd.y)
+                    if (spaceStart.Y <= y && y < spaceEnd.Y)
                     {
-                        if (spaceStart.x <= x && x < spaceEnd.x)
+                        if (spaceStart.X <= x && x < spaceEnd.X)
+                        {
                             continue;
-                        else if (x == spaceEnd.x)
+                        }
+                        else if (x == spaceEnd.X)
+                        {
                             charOffset = 0;
+                        }
                     }
 
                     world.SetTile(x, y, content[charOffset++], color);
 
                     if (charOffset >= content.Length)
+                    {
                         charOffset = 0;
+                    }
                 }
 
                 charOffset = 0;

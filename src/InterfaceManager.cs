@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using ConsoleEngine.Objects;
 
-namespace ConsoleEngine.Core
+namespace ConsoleEngine
 {
     public class InterfaceManager
     {

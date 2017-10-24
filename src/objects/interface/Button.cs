@@ -1,5 +1,5 @@
 using System;
-using ConsoleEngine.Core;
+using ConsoleEngine;
 
 namespace ConsoleEngine.Objects
 {
@@ -24,21 +24,26 @@ namespace ConsoleEngine.Objects
 
         public void Draw(World world)
         {
-            int x = transform.position.x;
-            int y = transform.position.y;
+            int x = transform.Position.X;
+            int y = transform.Position.Y;
 
             ConsoleColor color = unselectedColor;
-            if(selected) color = selectedColor;
+            if(selected)
+            {
+                color = selectedColor;
+            }
 
             foreach (char c in content)
             {
                 if (c == '\n')
                 {
                     y++;
-                    x = transform.position.x;
+                    x = transform.Position.X;
                 }
                 else
+                {
                     world.SetTile(x++, y, c, color);
+                }
             }
         }
 

@@ -1,19 +1,16 @@
 using System;
-using System.Threading;
 
-namespace ConsoleEngine.Core 
+namespace ConsoleEngine
 {
     public abstract class Game
     {
-        protected string[] args;
-
         protected bool isRunning;
 
         protected int frameCounter;
 
-        public Game(string[] args)
+        public Game()
         {
-            this.args = args; 
+
         }
 
         public void Start()
@@ -46,18 +43,6 @@ namespace ConsoleEngine.Core
                 Unload();
 
                 Console.Clear();
-            }
-        }
-
-        protected void ChangeGame(Game game)
-        {
-            if(isRunning)
-            {
-                isRunning = false;
-                Unload();
-
-                game.args = args;
-                game.Start();
             }
         }
 

@@ -1,18 +1,18 @@
-namespace ConsoleEngine.Core
+namespace ConsoleEngine
 {
     public class Transform
     {
-        public Vector2 position { get; private set; }
+        public Vector2 Position { get; private set; }
         
         public void Translate(Vector2 newPosition)
         {
-            position = newPosition;
+            Position = newPosition;
         }
 
         //Constructor
         public Transform(Vector2 position)
         {
-            this.position = position;
+            this.Position = position;
         }
     }
 }

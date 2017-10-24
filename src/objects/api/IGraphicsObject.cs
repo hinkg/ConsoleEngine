@@ -1,11 +1,9 @@
-﻿using ConsoleEngine.Core;
+﻿using ConsoleEngine;
 
 namespace ConsoleEngine.Objects
 {
     public interface IGraphicsObject
     {
         void Draw(World world);
-
-        void Add(World world);
     }
 }

@@ -1,6 +1,6 @@
 using System;
 
-namespace ConsoleEngine.Core
+namespace ConsoleEngine
 {
     public class GraphicsDevice
     {
@@ -13,8 +13,10 @@ namespace ConsoleEngine.Core
         public Vector2 camera;
 
         private float msCounter = 1000;
-        private String displayMs, displayFps;
+        private string displayMs, displayFps;
         private long previousTime = DateTime.Now.Ticks;
+
+        private bool error;
 
         public GraphicsDevice(int width, int height, string windowname)
         {
@@ -26,9 +28,9 @@ namespace ConsoleEngine.Core
 
             Console.Clear();
             Console.CursorVisible = false;
-            Console.SetWindowSize(width, height);
+            Console.SetWindowSize(width + 1, height + 1);
             Console.BufferWidth = width + 1;
-            Console.BufferHeight = height;
+            Console.BufferHeight = height + 1;
 
             view = new Tile[width * height];
             prevView = new Tile[view.Length];
@@ -42,10 +44,25 @@ namespace ConsoleEngine.Core
 
         public void UpdateView(World world)
         {
-            if (camera.x < 0) camera.x = 0;
-            if (camera.y < 0) camera.y = 0;
-            if (camera.x > world.size.x - width) camera.x = world.size.x - width;
-            if (camera.y > world.size.y - height) camera.y = world.size.y - height;
+            if (camera.X < 0)
+            {
+                camera.X = 0;
+            }
+
+            if (camera.Y < 0)
+            {
+                camera.Y = 0;
+            }
+
+            if (camera.X > world.size.X - width)
+            {
+                camera.X = world.size.X - width;
+            }
+
+            if (camera.Y > world.size.Y - height)
+            {
+                camera.X = world.size.Y - height;
+            }
 
             int index = 0;
 
@@ -53,7 +70,7 @@ namespace ConsoleEngine.Core
             {
                 for (int x = 0; x < width; x++)
                 {
-                    view[index++] = world.map[x + camera.x + (y + camera.y) * world.size.x];
+                    view[index++] = world.map[x + camera.X + (y + camera.Y) * world.size.X];
                 }
             }
         }
@@ -123,6 +140,18 @@ namespace ConsoleEngine.Core
                             color = tile.color;
 
                             // Prepare cursor position for next render
+
+                            if (Console.WindowWidth < width || Console.WindowHeight < height)
+                            {
+                                error = true;
+                                break;
+                            }
+                            else if(error)
+                            {
+                                Console.Clear();
+                                error = false;
+                            }
+
                             Console.SetCursorPosition(x, y);
                         }
 
@@ -167,12 +196,19 @@ namespace ConsoleEngine.Core
 
             while (msCounter >= 1000)
             {
-                displayMs = string.Format("{0:0.0}", ms);
-                displayFps = string.Format("{0:0.0}", 1000 / ms);
+                displayMs = String.Format("{0:0.0}", ms);
+                displayFps = String.Format("{0:0.0}", 1000 / ms);
                 msCounter -= 1000;
             }
 
-            Console.Title = $"{windowname} : {displayFps}fps ({displayMs}ms) : {updates} updates : {draws} draws";
+            if (error)
+            {
+                Console.Title = "ERROR";
+            }
+            else
+            {
+                Console.Title = $"{windowname} : {displayFps}fps ({displayMs}ms) : {updates} updates : {draws} draws";
+            }
         }
     }
 }

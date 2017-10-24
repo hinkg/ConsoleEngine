@@ -1,10 +1,8 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using ConsoleEngine;
 using ConsoleEngine.Objects;
 
-namespace ConsoleEngine.Core
+namespace ConsoleEngine
 {
     public class World
     {
@@ -19,7 +17,7 @@ namespace ConsoleEngine.Core
 
             this.size = size;
 
-            map = new Tile[size.x * size.y];
+            map = new Tile[size.X * size.Y];
 
             for (int i = 0; i < map.Length; i++)
             {
@@ -29,9 +27,9 @@ namespace ConsoleEngine.Core
 
         public void SetTile(int x, int y, char content, ConsoleColor color)
         {
-            if (0 <= x && x < size.x && 0 <= y && y < size.y)
+            if (0 <= x && x < size.X && 0 <= y && y < size.Y)
             {
-                Tile tile = map[x + y * size.x];
+                Tile tile = map[x + y * size.X];
                 tile.content = content;
                 tile.color = color;
             }
@@ -43,6 +41,11 @@ namespace ConsoleEngine.Core
             {
                 objects[i].Draw(this);
             }
+        }
+
+        public void Add(IGraphicsObject obj)
+        {
+            objects.Add(obj);
         }
     }
 

@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using ConsoleEngine.Core;
+using ConsoleEngine;
 
 namespace ConsoleEngine.Objects
 {
@@ -11,7 +11,7 @@ namespace ConsoleEngine.Objects
 
         public Image(string filepath, Vector2 position)
         {
-            text = string.Join("\n", File.ReadAllLines(filepath));
+            text = String.Join("\n", File.ReadAllLines(filepath));
             this.transform = new Transform(position);
         }
 
@@ -22,8 +22,8 @@ namespace ConsoleEngine.Objects
 
         public void Draw(World world)
         {
-            int x = transform.position.x;
-            int y = transform.position.y;
+            int x = transform.Position.X;
+            int y = transform.Position.Y;
 
             bool setColor = false;
             ConsoleColor color = ConsoleColor.White;
@@ -37,11 +37,11 @@ namespace ConsoleEngine.Objects
                 else if (c == '\n')
                 {
                     y++;
-                    x = transform.position.x;
+                    x = transform.Position.X;
                 }
                 else if(setColor && c != '\\')
                 {
-                    switch(char.ToLower(c))
+                    switch(Char.ToLower(c))
                     {
                         case '0': color = ConsoleColor.Black; break;
                         case '1': color = ConsoleColor.DarkBlue; break;
